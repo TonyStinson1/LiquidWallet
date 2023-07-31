@@ -9,6 +9,8 @@ import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Image,
+  ImageBackground,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -18,61 +20,34 @@ import {
   View,
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Stacknavigation from './src/navigation/StackNavigation';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   useEffect(() => {
     SplashScreen.hide();
   }, []);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaProvider>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={'#10193a'}
       />
-      <View
-        style={{
-          backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        }}>
-        <Image
-          source={require('./assets/images/mobile_page.png')}
-          style={{width: '100%', height: '100%'}}
-        />
-      </View>
-    </SafeAreaView>
+      <Stacknavigation />
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  btn: {
+    width: 250,
+    height: 30,
+    backgroundColor: '#1E2A59',
+    borderWidth: 1,
   },
 });
 
