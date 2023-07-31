@@ -2,6 +2,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // import Login from '../screens/Auth/Login'
 import Register from '../screens/Auth/Register'
+import SetupPasscode from '../screens/Auth/SetupPasscode'
+import CustomHeader from '../components/CustomHeader'
+import PinScreen from '../screens/Auth/PinScreen'
+import RePinScreen from '../screens/Auth/RePinScreen'
 
 const Stack = createNativeStackNavigator() //AuthNavigationParamList
 
@@ -14,6 +18,24 @@ export const PreAuthNavigator = () => {
                 component={Register}
                 options={{ headerShown: false }}
                 // options={{ header: () => <CustomHeader title='About you' /> }}
+            />
+            <Stack.Screen
+                name='SetupPasscode'
+                component={SetupPasscode}
+                // options={{ headerShown: false }}
+                options={{ header: () => <CustomHeader /> }}
+            />
+            <Stack.Screen
+                name='PinScreen'
+                component={PinScreen}
+                // options={{ headerShown: false }}
+                options={{ header: () => <CustomHeader /> }}
+            />
+            <Stack.Screen
+                name='RePinScreen'
+                component={RePinScreen}
+                // options={{ headerShown: false }}
+                options={{ header: () => <CustomHeader /> }}
             />
         </Stack.Navigator>
     )
