@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // You can use any icon library of your choice
 import {useNavigation} from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthNavigationParamList } from '../../navigation/interface';
 
 interface KeyButtonProps {
   digit: string;
@@ -17,7 +19,7 @@ interface KeyButtonProps {
 }
 
 const PinScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
 
   const [pin, setPin] = useState('');
 

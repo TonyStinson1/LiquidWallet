@@ -8,6 +8,9 @@ import {
   Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // You can use any icon library of your choice
+import {useNavigation} from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthNavigationParamList, IRePinScreen } from '../../navigation/interface';
 
 interface KeyButtonProps {
   digit: string;
@@ -15,7 +18,13 @@ interface KeyButtonProps {
   disabled?: boolean;
 }
 
-const RePinScreen: React.FC = () => {
+const RePinScreen: React.FC<{
+  route: {
+      params: IRePinScreen
+  }
+}> = (props) => {
+  const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
+
   const [pin, setPin] = useState('');
 
   const handlePinInput = (digit: string) => {
@@ -27,6 +36,12 @@ const RePinScreen: React.FC = () => {
   const handleBackspace = () => {
     setPin(prevPin => prevPin.slice(0, -1));
   };
+
+  const navToBio = () => {
+    if(props.route.params.pin == pin) {
+      navigation.navigate('Biometric')
+    }
+  }
 
   const KeyButton: React.FC<KeyButtonProps> = ({digit, onPress, disabled}) => {
     return (
@@ -80,7 +95,7 @@ const RePinScreen: React.FC = () => {
       </View>
       <View style={{position: 'absolute', bottom: '15%'}}>
         <Pressable
-          // onPress={() => navigation.navigate('PinScreen')}
+          onPress={() => navToBio()}
           style={[styles.btn]} disabled={pin.length < 6}>
           <Text style={[styles.btnText]}>Submit</Text>
         </Pressable>

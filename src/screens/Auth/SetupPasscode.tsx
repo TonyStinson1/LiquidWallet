@@ -2,9 +2,11 @@ import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Icon2 from 'react-native-vector-icons/Fontisto';
 import {useNavigation} from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthNavigationParamList } from '../../navigation/interface';
 
 const SetupPasscode: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
 
   return (
     <View style={{flex: 1, backgroundColor: '#10193a', alignItems: 'center'}}>

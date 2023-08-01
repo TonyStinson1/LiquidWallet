@@ -6,8 +6,10 @@ import SetupPasscode from '../screens/Auth/SetupPasscode'
 import CustomHeader from '../components/CustomHeader'
 import PinScreen from '../screens/Auth/PinScreen'
 import RePinScreen from '../screens/Auth/RePinScreen'
+import Biometric from '../screens/Auth/Biometric'
+import { AuthNavigationParamList } from './interface'
 
-const Stack = createNativeStackNavigator() //AuthNavigationParamList
+const Stack = createNativeStackNavigator<AuthNavigationParamList>() //AuthNavigationParamList
 
 export const PreAuthNavigator = () => {
     // Stack Navigator for Login and Sign up Screen
@@ -34,6 +36,12 @@ export const PreAuthNavigator = () => {
             <Stack.Screen
                 name='RePinScreen'
                 component={RePinScreen}
+                // options={{ headerShown: false }}
+                options={{ header: () => <CustomHeader /> }}
+            />
+            <Stack.Screen
+                name='Biometric'
+                component={Biometric}
                 // options={{ headerShown: false }}
                 options={{ header: () => <CustomHeader /> }}
             />
