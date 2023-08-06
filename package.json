@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@haskkor/react-native-pincode": "^1.22.6",
+    "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@types/react-native-vector-icons": "^6.4.13",
@@ -21,7 +22,11 @@
     "react-native-screens": "^3.23.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-toast-message": "^2.1.6",
-    "react-native-vector-icons": "^10.0.0"
+    "react-native-vector-icons": "^10.0.0",
+    "react-redux": "^8.1.2",
+    "redux": "^4.2.1",
+    "redux-flipper": "^2.0.2",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
