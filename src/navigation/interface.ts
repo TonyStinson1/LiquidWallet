@@ -10,6 +10,8 @@ export type AuthNavigationParamList = {
     PinScreen: undefined
     RePinScreen: IRePinScreen
     Biometric: undefined
+    ImportWallet: undefined
+    Password: undefined
 }
 
 export type IRePinScreen = {

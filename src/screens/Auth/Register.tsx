@@ -12,10 +12,12 @@ import {
   View,
 } from 'react-native';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthNavigationParamList } from '../../navigation/interface';
 
 const Register: React.FC = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
 
   return (
     <ImageBackground
@@ -31,7 +33,7 @@ const Register: React.FC = () => {
           <Pressable onPress={() => navigation.navigate('SetupPasscode')} style={styles.btn}>
             <Text style={styles.btnText}>Create a new wallet</Text>
           </Pressable>
-          <Pressable style={[styles.btn, {backgroundColor: '#fff'}]}>
+          <Pressable onPress={() => navigation.navigate('ImportWallet')} style={[styles.btn, {backgroundColor: '#fff'}]}>
             <Text style={[styles.btnText, { color: '#000' }]}>I already have a wallet</Text>
           </Pressable>
         </View>
