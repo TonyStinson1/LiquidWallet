@@ -4,7 +4,7 @@ import {
     Text
 } from 'react-native'
 
-const Home: React.FC = () => {
+const ConnectionsScreen: React.FC = () => {
     return (
         <View>
             <Text></Text>
@@ -12,4 +12,4 @@ const Home: React.FC = () => {
     )
 }
 
-export default Home
+export default ConnectionsScreen

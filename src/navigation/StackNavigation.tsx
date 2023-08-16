@@ -15,10 +15,15 @@ export default function Stacknavigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+          name="PostAuth"
+          component={PostAuthNavigator}
+          options={{headerShown: false}}
+        />
+        {/* <Stack.Screen
           name="PreAuth"
           component={PreAuthNavigator}
           options={{headerShown: false}}
-        />
+        /> */}
       </Stack.Navigator>
       {/* <Toast config={toastConfig} position="bottom" /> */}
     </NavigationContainer>
