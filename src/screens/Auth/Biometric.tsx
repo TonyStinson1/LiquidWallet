@@ -4,9 +4,13 @@ import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {useNavigation} from '@react-navigation/native';
 import ReactNativeBiometrics, {BiometryTypes} from 'react-native-biometrics';
+import {useAppDispatch} from '../../store/AppHooks';
+import {setAccessToken} from '../../store/slices/authSlice';
 
 const Biometric: React.FC = () => {
   const navigation = useNavigation();
+
+  const dispatch = useAppDispatch();
 
   const rnBiometrics = new ReactNativeBiometrics({
     allowDeviceCredentials: true,
@@ -21,6 +25,7 @@ const Biometric: React.FC = () => {
 
           if (success) {
             // navigation.navigate('DrawerNavigationRoutes');
+            dispatch(setAccessToken({accessToken: 'sjdcbisdbsioubcsiodbv'}));
           } else {
             Alert.alert(
               'Fingerprint not exist or were deleted . Please add fingerprint in system ',

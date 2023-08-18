@@ -1,11 +1,22 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable, TextInput, Keyboard} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TextInput,
+  Keyboard,
+} from 'react-native';
 import Icon2 from 'react-native-vector-icons/Fontisto';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {AuthNavigationParamList} from '../../navigation/interface';
+import {setAccessToken} from '../../store/slices/authSlice';
+import {useAppDispatch} from '../../store/AppHooks';
 
 const Password: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
 
@@ -18,31 +29,33 @@ const Password: React.FC = () => {
       accessible={false}
       style={{flex: 1, backgroundColor: '#10193a', alignItems: 'center'}}>
       {/* <View > */}
-        <View style={{top: '20%'}}>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={styles.btnText}>Enter Password</Text>
-          </View>
-          <View style={{marginTop: 20}}>
-            <TextInput
-              style={{
-                width: 300,
-                backgroundColor: '#fff',
-                height: 50,
-                borderRadius: 30,
-                padding: 10,
-                paddingLeft: 20,
-              }}
-              placeholder="Enter Password"
-            />
-          </View>
+      <View style={{top: '20%'}}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={styles.btnText}>Enter Password</Text>
         </View>
-        <View style={{position: 'absolute', bottom: '20%'}}>
-          <Pressable
-            // onPress={() => navigation.navigate('Password')}
-            style={styles.btn}>
-            <Text style={styles.btnText}>Next</Text>
-          </Pressable>
+        <View style={{marginTop: 20}}>
+          <TextInput
+            style={{
+              width: 300,
+              backgroundColor: '#fff',
+              height: 50,
+              borderRadius: 30,
+              padding: 10,
+              paddingLeft: 20,
+            }}
+            placeholder="Enter Password"
+          />
         </View>
+      </View>
+      <View style={{position: 'absolute', bottom: '20%'}}>
+        <Pressable
+          onPress={() =>
+            dispatch(setAccessToken({accessToken: 'sjdcbisdbsioubcsiodbv'}))
+          }
+          style={styles.btn}>
+          <Text style={styles.btnText}>Next</Text>
+        </Pressable>
+      </View>
       {/* </View> */}
     </Pressable>
   );
