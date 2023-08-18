@@ -8,9 +8,13 @@ import {
   Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // You can use any icon library of your choice
+import Icon1 from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AuthNavigationParamList, IRePinScreen } from '../../navigation/interface';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {
+  AuthNavigationParamList,
+  IRePinScreen,
+} from '../../navigation/interface';
 
 interface KeyButtonProps {
   digit: string;
@@ -20,12 +24,14 @@ interface KeyButtonProps {
 
 const RePinScreen: React.FC<{
   route: {
-      params: IRePinScreen
-  }
-}> = (props) => {
-  const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
+    params: IRePinScreen;
+  };
+}> = props => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
 
   const [pin, setPin] = useState('');
+  const [error, setError] = useState(false);
 
   const handlePinInput = (digit: string) => {
     if (pin.length < 6) {
@@ -38,10 +44,13 @@ const RePinScreen: React.FC<{
   };
 
   const navToBio = () => {
-    if(props.route.params.pin == pin) {
-      navigation.navigate('Biometric')
+    if (props.route.params.pin == pin) {
+      setError(false);
+      navigation.navigate('Biometric');
+    } else {
+      setError(true);
     }
-  }
+  };
 
   const KeyButton: React.FC<KeyButtonProps> = ({digit, onPress, disabled}) => {
     return (
@@ -60,7 +69,7 @@ const RePinScreen: React.FC<{
 
   return (
     <View style={styles.container}>
-      <View style={{ marginBottom: 20 }}>
+      <View style={{marginBottom: 20}}>
         <Text style={styles.passcodeText}>Retype your passcode</Text>
       </View>
       <View style={styles.pinContainer}>
@@ -71,6 +80,21 @@ const RePinScreen: React.FC<{
           />
         ))}
       </View>
+      {error && (
+        <View
+          style={{
+            width: 200,
+            height: 50,
+            backgroundColor: '#1E2A59',
+            margin: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <Icon1 name="warning" size={24} color="#DC2626" />
+          <Text style={{color: '#fff'}}>Wrong Passcode</Text>
+        </View>
+      )}
       <View style={styles.keypadContainer}>
         <View style={styles.row}>
           <KeyButton digit="1" onPress={() => handlePinInput('1')} />
@@ -93,10 +117,11 @@ const RePinScreen: React.FC<{
           <KeyButton digit="backspace" onPress={handleBackspace} />
         </View>
       </View>
-      <View style={{position: 'absolute', bottom: '15%'}}>
+      <View style={[styles.submitContainer, error ? {bottom: '5%'} : null]}>
         <Pressable
           onPress={() => navToBio()}
-          style={[styles.btn]} disabled={pin.length < 6}>
+          style={[styles.btn]}
+          disabled={pin.length < 6}>
           <Text style={[styles.btnText]}>Submit</Text>
         </Pressable>
       </View>
@@ -110,12 +135,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#10193a',
-    paddingTop: 70,
+    paddingTop: 20,
   },
   pinContainer: {
     flexDirection: 'row',
     marginBottom: 30,
   },
+  submitContainer: {position: 'absolute', bottom: '15%'},
   dot: {
     width: 20,
     height: 20,

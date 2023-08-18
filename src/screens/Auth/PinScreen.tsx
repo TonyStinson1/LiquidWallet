@@ -29,6 +29,12 @@ const PinScreen: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (pin.length === 6) {
+      navigation.navigate('RePinScreen', { pin });
+    }
+  }, [pin, navigation]);
+
   const handleBackspace = () => {
     setPin(prevPin => prevPin.slice(0, -1));
   };
@@ -83,13 +89,13 @@ const PinScreen: React.FC = () => {
           <KeyButton digit="backspace" onPress={handleBackspace} />
         </View>
       </View>
-      <View style={{position: 'absolute', bottom: '15%'}}>
+      {/* <View style={{position: 'absolute', bottom: '15%'}}>
         <Pressable
           onPress={() => navigation.navigate('RePinScreen', { pin })}
           style={[styles.btn]} disabled={pin.length < 6} >
           <Text style={[styles.btnText]}>Enter</Text>
         </Pressable>
-      </View>
+      </View> */}
     </View>
   );
 };

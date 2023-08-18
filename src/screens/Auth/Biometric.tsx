@@ -71,7 +71,9 @@ const Biometric: React.FC = () => {
           </Text>
         </Pressable>
         <Pressable
-          //   onPress={() => navigation.navigate('PinScreen')}
+          onPress={() =>
+            dispatch(setAccessToken({accessToken: 'sjdcbisdbsioubcsiodbv'}))
+          }
           style={[styles.btnBio, {alignSelf: 'center'}]}>
           <View
             style={{

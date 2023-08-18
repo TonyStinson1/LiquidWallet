@@ -21,7 +21,7 @@ const Register: React.FC = () => {
 
   return (
     <ImageBackground
-      source={require('../../../assets/images/mobile_page2.png')}
+      source={require('../../../assets/images/Login.png')}
       style={{width: '100%', height: '100%'}}>
       <View
         style={{
