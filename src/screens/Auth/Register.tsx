@@ -20,16 +20,20 @@ const Register: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>();
 
   return (
-    <ImageBackground
-      source={require('../../../assets/images/Login.png')}
-      style={{width: '100%', height: '100%'}}>
+    // <ImageBackground
+    //   source={require('../../../assets/images/Login.png')}
+    //   style={{width: '100%', height: '100%'}}>
       <View
         style={{
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#101A3A'
         }}>
-        <View style={{top: '25%'}}>
+        <View>
+          <Image source={require('../../../assets/images/register.png')} style={{ width: 150, height: 70, resizeMode: 'contain' }} />
+        </View>
+        <View style={{ top: '15%' }}>
           <Pressable onPress={() => navigation.navigate('SetupPasscode')} style={styles.btn}>
             <Text style={styles.btnText}>Create a new wallet</Text>
           </Pressable>
@@ -38,16 +42,15 @@ const Register: React.FC = () => {
           </Pressable>
         </View>
       </View>
-    </ImageBackground>
+    // </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   btn: {
-    width: 250,
-    height: 35,
+    width: 230,
+    height: 40,
     backgroundColor: '#1E2A59',
-    borderWidth: 1,
     marginBottom: 15,
     borderRadius: 20,
     alignItems: 'center',

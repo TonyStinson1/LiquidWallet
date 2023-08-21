@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TextInput,
@@ -52,6 +52,21 @@ const RePinScreen: React.FC<{
     }
   };
 
+  useEffect(() => {
+    if(error) {
+      setTimeout(() => {
+        setPin('')
+        setError(false);
+      }, 3000);
+    }
+  }, [error])
+
+  useEffect(() => {
+    if (pin.length === 6) {
+      navToBio()
+    }
+  }, [pin, navigation]);
+
   const KeyButton: React.FC<KeyButtonProps> = ({digit, onPress, disabled}) => {
     return (
       <TouchableOpacity
@@ -69,7 +84,22 @@ const RePinScreen: React.FC<{
 
   return (
     <View style={styles.container}>
-      <View style={{marginBottom: 20}}>
+      {error && (
+        <View
+          style={{
+            width: 200,
+            height: 50,
+            backgroundColor: '#1E2A59',
+            margin: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <Icon1 name="warning" size={24} color="#DC2626" />
+          <Text style={{color: '#fff'}}>Wrong Passcode</Text>
+        </View>
+      )}
+      <View style={styles.passcodeTextContainer}>
         <Text style={styles.passcodeText}>Retype your passcode</Text>
       </View>
       <View style={styles.pinContainer}>
@@ -80,21 +110,6 @@ const RePinScreen: React.FC<{
           />
         ))}
       </View>
-      {error && (
-        <View
-          style={{
-            width: 200,
-            height: 50,
-            backgroundColor: '#1E2A59',
-            margin: 15,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <Icon1 name="warning" size={24} color="#DC2626" />
-          <Text style={{color: '#fff'}}>Wrong Passcode</Text>
-        </View>
-      )}
       <View style={styles.keypadContainer}>
         <View style={styles.row}>
           <KeyButton digit="1" onPress={() => handlePinInput('1')} />
@@ -117,14 +132,14 @@ const RePinScreen: React.FC<{
           <KeyButton digit="backspace" onPress={handleBackspace} />
         </View>
       </View>
-      <View style={[styles.submitContainer, error ? {bottom: '5%'} : null]}>
+      {/* <View style={[styles.submitContainer,]}>
         <Pressable
           onPress={() => navToBio()}
           style={[styles.btn]}
           disabled={pin.length < 6}>
           <Text style={[styles.btnText]}>Submit</Text>
         </Pressable>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -132,16 +147,20 @@ const RePinScreen: React.FC<{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#10193a',
     paddingTop: 20,
+  },
+  passcodeTextContainer: {
+    marginBottom: 20,
+    alignSelf: 'center'
   },
   pinContainer: {
     flexDirection: 'row',
     marginBottom: 30,
   },
-  submitContainer: {position: 'absolute', bottom: '15%'},
+  submitContainer: {position: 'absolute', bottom: 15},
   dot: {
     width: 20,
     height: 20,
@@ -188,7 +207,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 45,
     backgroundColor: '#1E2A59',
-    borderWidth: 1,
     marginBottom: 15,
     borderRadius: 30,
     alignItems: 'center',

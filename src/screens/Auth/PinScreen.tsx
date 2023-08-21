@@ -56,11 +56,11 @@ const PinScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginBottom: 20 }}>
+      <View style={styles.passcodeTextContainer}>
         <Text style={styles.passcodeText}>Create your passcode</Text>
       </View>
       <View style={styles.pinContainer}>
-        {Array.from({length: 6}).map((_, index) => (
+        {Array.from({ length: 6 }).map((_, index) => (
           <View
             key={index}
             style={[styles.dot, index < pin.length && styles.filledDot]}
@@ -103,10 +103,13 @@ const PinScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#10193a',
-    paddingTop: 70,
+  },
+  passcodeTextContainer: {
+    marginBottom: 20,
+    alignSelf: 'center'
   },
   pinContainer: {
     flexDirection: 'row',
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     backgroundColor: '#10193a',
-    marginHorizontal: 10,
+    marginHorizontal: 8,
   },
   filledDot: {
     backgroundColor: 'white',
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
   passcodeText: {
     color: 'white',
     marginBottom: 20,
-    fontSize: 18,
+    fontSize: 20.5,
   },
   btn: {
     width: 250,
