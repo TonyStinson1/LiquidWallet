@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import CustomBackdrop from '../../components/CustomBackdrop';
 
 const Credentials = () => {
   // ref
@@ -153,9 +154,12 @@ const Credentials = () => {
         ref={bottomSheetModalRef}
         index={1}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+        backdropComponent={CustomBackdrop}
+        handleStyle={styles.handlingStyle}
+        >
         <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
+          <Text style={{ color: 'white' }}>Awesome 🎉</Text>
         </View>
       </BottomSheetModal>
     </ScrollView>
@@ -167,6 +171,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: 'grey',
+  },
+  handlingStyle: {
+    backgroundColor: '#10193A',
+  },
+  contentContainer: {
+    backgroundColor: '#10193A',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });
 
