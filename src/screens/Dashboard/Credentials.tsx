@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,26 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 const Credentials = () => {
+  // ref
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = [1, '70%'];
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
   return (
     <ScrollView style={{backgroundColor: '#10193A', flex: 1}}>
       <View
@@ -64,6 +80,7 @@ const Credentials = () => {
         </View>
         {/* Collapsible Filter List */}
         <TouchableOpacity
+          onPress={handlePresentModalPress}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -132,8 +149,25 @@ const Credentials = () => {
           </Text>
         </View>
       </View>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}>
+        <View style={styles.contentContainer}>
+          <Text>Awesome 🎉</Text>
+        </View>
+      </BottomSheetModal>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+});
 
 export default Credentials;
