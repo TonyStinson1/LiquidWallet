@@ -7,17 +7,27 @@ import {
   Image,
   ScrollView,
   StyleSheet,
+  Pressable
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import CustomBackdrop from '../../components/CustomBackdrop';
+
+const filerPoints = [
+  {header: 'Credential Type', below: 'Any Type'},
+  {header: 'Issuer DID', below: 'All Issuer DID'},
+  {header: 'Holder DID', below: 'All Holder DID'},
+  {header: 'Issuance Date', below: 'Anytime'},
+  {header: 'Expiration Date', below: 'Anytime'},
+  {header: 'Hide Expired', below: ''},
+];
 
 const Credentials = () => {
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = [1, '70%'];
+  const snapPoints = [1, '80%'];
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -26,6 +36,15 @@ const Credentials = () => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
+
+  const filterItems = (item: any) => {
+    return (
+      <View style={{margin: 20, marginLeft: 0}}>
+        <Text style={{color: '#fff', fontSize: 14}}>{item.header}</Text>
+        <Text style={{color: '#898989', fontSize: 10}}>{item.below}</Text>
+      </View>
+    );
+  };
 
   return (
     <ScrollView style={{backgroundColor: '#10193A', flex: 1}}>
@@ -157,9 +176,30 @@ const Credentials = () => {
         onChange={handleSheetChanges}
         backdropComponent={CustomBackdrop}
         handleStyle={styles.handlingStyle}
-        >
+        handleIndicatorStyle={styles.handleIndicator}>
         <View style={styles.contentContainer}>
-          <Text style={{ color: 'white' }}>Awesome 🎉</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderBottomWidth: 1,
+              borderBottomColor: '#fff',
+            }}>
+            <View style={{justifyContent: 'center', marginBottom: 10}}>
+              <Text style={{color: '#fff', fontSize: 20}}>Filters</Text>
+            </View>
+            <View style={{justifyContent: 'center', marginBottom: 10}}>
+              <Text style={{color: '#fff', fontSize: 16}}>Reset</Text>
+            </View>
+          </View>
+          <View>{filerPoints.map(item => filterItems(item))}</View>
+          <View>
+            <Pressable
+              // onPress={() => navigation.navigate('SetupPasscode')}
+              style={styles.btn}>
+              <Text style={styles.btnText}>Show Result</Text>
+            </Pressable>
+          </View>
         </View>
       </BottomSheetModal>
     </ScrollView>
@@ -178,8 +218,26 @@ const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: '#10193A',
     flex: 1,
+    padding: 25,
+    // justifyContent: 'center',
+    // alignItems: 'center'
+  },
+  handleIndicator: {
+    backgroundColor: '#fff',
+  },
+  btn: {
+    width: 230,
+    height: 40,
+    alignSelf: 'center',
+    backgroundColor: '#1E2A59',
+    marginBottom: 15,
+    borderRadius: 20,
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 15,
   },
 });
 
