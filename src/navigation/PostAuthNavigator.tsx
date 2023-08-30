@@ -6,6 +6,9 @@ import ConnectionsScreen from '../screens/Dashboard/ConnectionsScreen';
 import SettingsScreen from '../screens/Dashboard/SettingsScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CustomTabBar} from '../components/CustomTabBar';
+import CustomHeader from '../components/CustomHeader';
+import DIDEdit from '../screens/Dashboard/DIDEdit';
+import CreateDID from '../screens/Dashboard/CreateDID';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -47,6 +50,16 @@ export const PostAuthNavigator = () => {
         component={HomeScreen}
         options={{headerShown: false}}
         // options={{ header: () => <CustomHeader title='About you' /> }}
+      />
+      <Stack.Screen
+        name="DIDEdit"
+        component={DIDEdit}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="CreateDID"
+        component={CreateDID}
+        options={{ header: () => <CustomHeader /> }}
       />
     </Stack.Navigator>
   );
