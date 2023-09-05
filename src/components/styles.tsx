@@ -1,0 +1,127 @@
+import { Dimensions, StyleSheet } from 'react-native'
+// import colors from '../constant/colors'
+
+export const styles = StyleSheet.create({
+    modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    modalView: {
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        borderRadius: 10,
+        alignSelf: 'center',
+        width: '90%',
+        padding: 15,
+    },
+    modalBackground: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)' },
+    modalLabel: {
+        fontSize: 19,
+        color: 'blue',
+        fontWeight: '500',
+        marginVertical: 10,
+    },
+
+    titleStyle: {
+        fontSize: 27,
+        color: 'blue',
+        fontWeight: '600',
+        textTransform: 'capitalize',
+    },
+    modalViewConatiner: {
+        paddingBottom: 20,
+
+        backgroundColor: '#10193A',
+        marginHorizontal: 20,
+        borderRadius: 10,
+        width: '90%',
+        padding: 15,
+    },
+    modalbuttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: 25,
+    },
+    modalbuttonContainer1: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 25,
+    },
+    textStyle: {
+        color: '#fff',
+        width: Dimensions.get('screen').width / 4.5,
+        paddingVertical: 5,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        fontSize: Dimensions.get('screen').width / 26,
+        fontWeight: '600',
+        textAlign: 'center',
+        textTransform: 'capitalize',
+    },
+    modalHeading: {
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: 17,
+        marginTop: 10,
+        textAlign: 'center',
+    },
+    description: {
+        color: 'blue',
+        fontWeight: '600',
+        fontSize: 17,
+        marginTop: 10,
+        textTransform: 'capitalize',
+    },
+    selectDocumentConatiner: {
+        height: 200,
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        borderRadius: 10,
+        width: '90%',
+        padding: 15,
+    },
+    selectedImageView: {
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        borderRadius: 10,
+        width: '90%',
+        padding: 15,
+    },
+    showImageStyle: { width: 150, height: 150, alignSelf: 'center' },
+    imagecircle: {
+        height: 60,
+        width: 60,
+        borderRadius: 30,
+        backgroundColor: 'pink',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    uploadImage: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+    },
+    docOptionText: { alignSelf: 'center', marginTop: 5, fontSize: 16 },
+    modaluploadText: { color: '#fff', fontSize: 15, fontWeight: '400' },
+    uploadButtonStyle: {
+        backgroundColor: 'blue',
+        alignSelf: 'center',
+        paddingHorizontal: 40,
+        paddingVertical: 10,
+
+        borderRadius: 10,
+        marginTop: 20,
+    },
+    dropdownContainer: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        width: '90%',
+        alignSelf: 'center',
+    },
+    dropdownOptionsContainer: {
+        borderTopColor: '#ccc',
+        borderTopWidth: 1,
+        marginTop: 5,
+    },
+})

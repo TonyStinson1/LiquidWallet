@@ -6,6 +6,7 @@ export type PreAuthNavigationParamList = {
 
 export type PostAuthNavigationParamList = {
     DIDEdit: undefined
+    ExportDID: undefined
     Credential: undefined
 }
 

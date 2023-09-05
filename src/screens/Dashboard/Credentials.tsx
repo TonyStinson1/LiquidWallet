@@ -20,11 +20,6 @@ const filerPoints = [
     { header: 'Hide Expired', below: '' },
 ]
 
-const addPoints = [
-    { header: 'Create New DID', name: 'edit' },
-    { header: 'Import existing DID', name: 'share' },
-]
-
 const Credentials = () => {
     const [modalType, setModalType] = useState('')
     const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
@@ -44,8 +39,7 @@ const Credentials = () => {
 
     // callbacks
     const addPresentModalPress = useCallback(() => {
-        setModalType('add')
-        bottomSheetModalRef.current?.present()
+        console.log('Add credential')
     }, [])
 
     const handleSheetChanges = useCallback((index: number) => {
@@ -86,7 +80,7 @@ const Credentials = () => {
     }
 
     const renderModal = () => {
-        if (modalType == 'filter') {
+        if (modalType == 'edit') {
             return (
                 <View style={dashStyles.contentContainer}>
                     <View style={dashStyles.modalDashboard}>
