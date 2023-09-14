@@ -46,7 +46,7 @@ const RePinScreen: React.FC<{
   const navToBio = () => {
     if (props.route.params.pin == pin) {
       setError(false);
-      navigation.navigate('Biometric');
+      navigation.navigate('CreateDID');
     } else {
       setError(true);
     }

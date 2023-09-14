@@ -30,7 +30,7 @@ const ImportWallet: React.FC = () => {
       </View>
       <View style={{position: 'absolute', bottom: '20%'}}>
         <Pressable
-          onPress={() => navigation.navigate('Password')}
+          onPress={() => navigation.navigate('ImportDID')}
           style={styles.btn}>
           <Text style={styles.btnText}>Import Wallet</Text>
         </Pressable>

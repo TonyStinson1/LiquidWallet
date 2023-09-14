@@ -12,6 +12,9 @@ export type PostAuthNavigationParamList = {
 
 export type AuthNavigationParamList = {
     Register: undefined
+    ImportDID: undefined
+    CreateDID: undefined
+    DIDRecovery: undefined
     SetupPasscode: undefined
     PinScreen: undefined
     RePinScreen: IRePinScreen
