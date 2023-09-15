@@ -8,6 +8,7 @@ import {
     Keyboard,
     TouchableOpacity,
     TouchableOpacityBase,
+    Image,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -51,9 +52,16 @@ const DIDRecovery: React.FC = () => {
                         padding: 10,
                     }}
                 >
-                    <Text style={{ fontSize: 12, color: '#000' }}>
-                        century chair easy frost crucial swim walnut shoulder affair chase sound ceiling
-                    </Text>
+                    {!showSecret ? (
+                        <Image
+                            style={{ position: 'absolute', zIndex: 999 }}
+                            source={require('../../../assets/images/blur.png')}
+                        />
+                    ) : (
+                        <Text style={{ fontSize: 12, color: '#000' }}>
+                            century chair easy frost crucial swim walnut shoulder affair chase sound ceiling
+                        </Text>
+                    )}
                     <TouchableOpacity
                         style={{ position: 'absolute', right: 20, bottom: 15 }}
                         onPress={() => setShowSecret(!showSecret)}
