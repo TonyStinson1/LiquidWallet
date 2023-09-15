@@ -64,9 +64,9 @@ const CreateDID: React.FC = () => {
                 </View>
             </View>
             <View style={[styles.labelContainer, { marginTop: 30, flexDirection: 'row', alignItems: 'center' }]}>
-                <TouchableOpacity onPress={() => setShowTick(!showTick)}>
+                <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={() => setShowTick(!showTick)}>
                     {showTick ? (
-                        <Icon1 name='square-fill' size={17} color='#00EC6D' />
+                        <Icon1 name='square-fill' size={15} color='#00EC6D' />
                     ) : (
                         <Icon1 name='square' size={15} color='#fff' />
                     )}
