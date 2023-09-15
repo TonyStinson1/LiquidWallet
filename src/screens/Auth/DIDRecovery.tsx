@@ -82,24 +82,27 @@ const DIDRecovery: React.FC = () => {
                 </View>
             </View>
             <View style={{ marginTop: '20%' }}>
-                {showSecret && <View style={[styles.labelContainer, { marginTop: 30, flexDirection: 'row', alignItems: 'center' }]}>
-                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={() => setShowTick(!showTick)}>
-                        {showTick ? (
-                            <Icon1 name='square-fill' size={15} color='#00EC6D' />
-                        ) : (
-                            <Icon1 name='square' size={15} color='#fff' />
-                        )}
-                    </TouchableOpacity>
-                    <View style={{ marginLeft: 5 }}>
-                        <Text style={styles.subTitleText}>I saved my Secret Recovery Phrase</Text>
-                    </View>
-                </View>}
-                <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                    <Pressable
-                        disabled={!showTick}
-                        onPress={() => navigation.navigate('Biometric')}
-                        style={styles.btn}
+                {showSecret && (
+                    <View
+                        style={[styles.labelContainer, { marginTop: 30, flexDirection: 'row', alignItems: 'center' }]}
                     >
+                        <TouchableOpacity
+                            style={{ alignItems: 'center', justifyContent: 'center' }}
+                            onPress={() => setShowTick(!showTick)}
+                        >
+                            {showTick ? (
+                                <Icon1 name='square-fill' size={15} color='#00EC6D' />
+                            ) : (
+                                <Icon1 name='square' size={15} color='#fff' />
+                            )}
+                        </TouchableOpacity>
+                        <View style={{ marginLeft: 5 }}>
+                            <Text style={styles.subTitleText}>I saved my Secret Recovery Phrase</Text>
+                        </View>
+                    </View>
+                )}
+                <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                    <Pressable disabled={!showTick} onPress={() => navigation.navigate('Biometric')} style={styles.btn}>
                         <Text style={styles.btnText}>Confirm</Text>
                     </Pressable>
                 </View>
