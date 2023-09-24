@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     Text,
@@ -16,14 +16,29 @@ import { AuthNavigationParamList } from '../../navigation/interface'
 import { useAppDispatch } from '../../store/AppHooks'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Octicons'
+import Icon2 from 'react-native-vector-icons/Feather'
+import Clipboard from '@react-native-clipboard/clipboard'
+import { generate, count } from "random-words";
 
 const DIDRecovery: React.FC = () => {
     const dispatch = useAppDispatch()
 
     const [showSecret, setShowSecret] = useState(false)
     const [showTick, setShowTick] = useState(false)
+    const [mnemonic, setMnemonic] = useState<string | null>(null)
 
     const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>()
+
+    const copyToClipboard = () => {
+        Clipboard.setString(mnemonic!)
+    }
+
+    useEffect(() => {
+        const phraseArr = generate(12);
+        const mnemonicString = phraseArr.join(' ');
+        console.log("Phrases ", mnemonicString);
+        setMnemonic(mnemonicString)
+    }, [])
 
     return (
         <Pressable
@@ -59,9 +74,12 @@ const DIDRecovery: React.FC = () => {
                         />
                     ) : (
                         <Text style={{ fontSize: 12, color: '#000' }}>
-                            century chair easy frost crucial swim walnut shoulder affair chase sound ceiling
+                            {mnemonic}
                         </Text>
                     )}
+                   {showSecret && <TouchableOpacity style={{ position: 'absolute', right: 35, bottom: 15 }} onPress={copyToClipboard}>
+                        <Icon2 style={{ ...styles.iconStyle, right: 5, top: 4 }} name='copy' color={'#000'} size={18} />
+                    </TouchableOpacity>}
                     <TouchableOpacity
                         style={{ position: 'absolute', right: 20, bottom: 15 }}
                         onPress={() => setShowSecret(!showSecret)}
@@ -75,7 +93,7 @@ const DIDRecovery: React.FC = () => {
                             />
                         ) : (
                             <Icon
-                                style={{ ...styles.iconStyle, left: 10, top: 3 }}
+                                style={{ ...styles.iconStyle, left: 5, top: 3 }}
                                 name='eye'
                                 color={'#000'}
                                 size={18}
@@ -110,7 +128,7 @@ const DIDRecovery: React.FC = () => {
                     </View>
                 )}
                 <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                    <Pressable disabled={!showTick} onPress={() => navigation.navigate('Biometric')} style={styles.btn}>
+                    <Pressable disabled={!showTick} onPress={() => navigation.navigate('ImportDID')} style={styles.btn}>
                         <Text style={styles.btnText}>Confirm</Text>
                     </Pressable>
                 </View>

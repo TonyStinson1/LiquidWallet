@@ -1583,6 +1583,11 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-clipboard/clipboard@^1.11.2":
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.11.2.tgz#e826d0336b34e67294aaffa6878308900bc7d197"
+  integrity sha512-bHyZVW62TuleiZsXNHS1Pv16fWc0fh8O9WvBzl4h2fykqZRW9a+Pv/RGTH56E3X2PqzHP38K5go8zmCZUoIsoQ==
+
 "@react-native-community/async-storage@^1.7.1":
   version "1.12.1"
   resolved "https://registry.npmjs.org/@react-native-community/async-storage/-/async-storage-1.12.1.tgz"
@@ -5712,6 +5717,13 @@ queue@6.0.2:
   dependencies:
     inherits "~2.0.3"
 
+random-words@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/random-words/-/random-words-2.0.0.tgz#af1e1a75d506b5dec996094ab074bf2196272287"
+  integrity sha512-uqpnDqFnYrZajgmvgjmBrSZL2V1UA/9bNPGrilo12CmBeBszoff/avElutUlwWxG12gvmCk/8dUhvHefYxzYjw==
+  dependencies:
+    seedrandom "^3.0.5"
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"
@@ -6211,6 +6223,11 @@ scheduler@^0.23.0:
   integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
   dependencies:
     loose-envify "^1.1.0"
+
+seedrandom@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-3.0.5.tgz#54edc85c95222525b0c7a6f6b3543d8e0b3aa0a7"
+  integrity sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==
 
 semver@^5.6.0:
   version "5.7.2"

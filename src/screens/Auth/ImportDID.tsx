@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react'
-import { View, Text, StyleSheet, Pressable, TextInput, Keyboard, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Pressable, TextInput, Keyboard, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AuthNavigationParamList } from '../../navigation/interface'
 import { useAppDispatch } from '../../store/AppHooks'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Feather'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 const ImportDID: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -17,125 +18,243 @@ const ImportDID: React.FC = () => {
     const [showpassword, setShowPassword] = useState(true)
     const [showconfirmPassword, setShowConfirmPassword] = useState(true)
 
+    const [phrase1, setPhrase1] = useState('')
+    const [phrase2, setPhrase2] = useState('')
+    const [phrase3, setPhrase3] = useState('')
+    const [phrase4, setPhrase4] = useState('')
+    const [phrase5, setPhrase5] = useState('')
+    const [phrase6, setPhrase6] = useState('')
+    const [phrase7, setPhrase7] = useState('')
+    const [phrase8, setPhrase8] = useState('')
+    const [phrase9, setPhrase9] = useState('')
+    const [phrase10, setPhrase10] = useState('')
+    const [phrase11, setPhrase11] = useState('')
+    const [phrase12, setPhrase12] = useState('')
+
     const passwordRef = useRef<any>(null)
     const confirmPasswordRef = useRef<any>(null)
 
-    const secretRecoveryPhrases = [
-        'Phrase 1',
-        'Phrase 2',
-        'Phrase 3',
-        'Phrase 4',
-        'Phrase 5',
-        'Phrase 6',
-        'Phrase 7',
-        'Phrase 8',
-        'Phrase 9',
-        'Phrase 10',
-        'Phrase 11',
-        'Phrase 12',
-    ]
+    const handlePaste = async (text: string) => {
+        try {
+            const phrases = text.split(' ')
 
-    // Function to handle button click
-    const handleButtonClick = (phrase: string) => {
-        // Add your logic here when a button is clicked
-        console.log(`Clicked on: ${phrase}`)
-    }
-
-    // Create an array of pairs of phrases
-    const pairedPhrases: string[][] = []
-    for (let i = 0; i < secretRecoveryPhrases.length; i += 2) {
-        const pair: string[] = [secretRecoveryPhrases[i], secretRecoveryPhrases[i + 1]]
-        pairedPhrases.push(pair)
+            // Assign phrases to state variables
+            setPhrase1(phrases[0] || '')
+            setPhrase2(phrases[1] || '')
+            setPhrase3(phrases[2] || '')
+            setPhrase4(phrases[3] || '')
+            setPhrase5(phrases[4] || '')
+            setPhrase6(phrases[5] || '')
+            setPhrase7(phrases[6] || '')
+            setPhrase8(phrases[7] || '')
+            setPhrase9(phrases[8] || '')
+            setPhrase10(phrases[9] || '')
+            setPhrase11(phrases[10] || '')
+            setPhrase12(phrases[11] || '')
+        } catch (error) {
+            console.error('Error reading clipboard content:', error)
+        }
     }
 
     return (
         <Pressable
             onPress={() => {
-                // setEnableScrollViewScroll(true);
+                // setEnableScrollViewScroll('');
                 Keyboard.dismiss()
             }}
             accessible={false}
             style={{ flex: 1, backgroundColor: '#10193a' }}
         >
-            <View style={styles.labelContainer}>
-                <Text style={styles.btnText}>Import DID Account</Text>
-            </View>
-            <View style={[styles.labelContainer1, { flexDirection: 'row' }]}>
-                <Text style={styles.btnText1}>Secret Recovery Phrase (12 words)</Text>
-                <TouchableOpacity
-                    onPress={() => setShowSecret(!showSecret)}
-                    // style={styles.endIconContainer}
-                >
-                    {showSecret ? (
-                        <Icon style={{ ...styles.iconStyle, left: 10, top: 3 }} name='eye-off' color={'#fff'} size={18} />
-                    ) : (
-                        <Icon style={{ ...styles.iconStyle, left: 10, top: 3 }} name='eye' color={'#fff'} size={18} />
-                    )}
-                </TouchableOpacity>
-            </View>
-            {pairedPhrases.map((pair, index) => (
-                <View style={styles.row} key={index}>
-                    {pair.map((phrase, innerIndex) => (
-                        <Pressable key={innerIndex} style={styles.button} onPress={() => handleButtonClick(phrase)}>
-                            <Text style={styles.buttonText}>{` ${showSecret ? phrase : ''}`}</Text>
-                        </Pressable>
-                    ))}
+            <ScrollView>
+                <View style={styles.labelContainer}>
+                    <Text style={styles.btnText}>Import DID Account</Text>
                 </View>
-            ))}
-            <View style={styles.labelContainer1}>
-                <Text style={styles.btnText1}>Set Password</Text>
-            </View>
-            <View>
-                <View style={styles.iconContainer}>
-                    <Icon1 style={styles.iconStyle} name='lock' color={'#000'} size={18} />
+                <View style={[styles.labelContainer1, { flexDirection: 'row' }]}>
+                    <Text style={styles.btnText1}>Secret Recovery Phrase (12 words)</Text>
+                    <TouchableOpacity
+                        onPress={() => setShowSecret(!showSecret)}
+                        // style={styles.endIconContainer}
+                    >
+                        {showSecret ? (
+                            <Icon
+                                style={{ ...styles.iconStyle, left: 10, top: 3 }}
+                                name='eye-off'
+                                color={'#fff'}
+                                size={18}
+                            />
+                        ) : (
+                            <Icon
+                                style={{ ...styles.iconStyle, left: 10, top: 3 }}
+                                name='eye'
+                                color={'#fff'}
+                                size={18}
+                            />
+                        )}
+                    </TouchableOpacity>
                 </View>
-                <TextInput
-                    style={[styles.input]}
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    placeholder='Enter'
-                    secureTextEntry={showpassword}
-                    returnKeyType='done'
-                    onSubmitEditing={() => confirmPasswordRef.current.focus()}
-                    ref={passwordRef}
-                />
-                <TouchableOpacity onPress={() => setShowPassword(!showpassword)} style={styles.endIconContainer}>
-                    {showpassword ? (
-                        <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye-off' color={'#000'} size={18} />
-                    ) : (
-                        <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye' color={'#000'} size={18} />
-                    )}
-                </TouchableOpacity>
-            </View>
-            <View>
-                <View style={styles.iconContainer}>
-                    <Icon1 style={styles.iconStyle} name='lock' color={'#000'} size={18} />
+                <View style={[styles.inputContainer, { marginTop: 15 }]}>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase1}
+                            onChangeText={(text) => handlePaste(text)}
+                        />
+                    </View>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase2}
+                            onChangeText={(text) => setPhrase2(text)}
+                        />
+                    </View>
                 </View>
-                <TextInput
-                    style={[styles.input]}
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    placeholder='Re-Enter'
-                    secureTextEntry={showconfirmPassword}
-                    returnKeyType='done'
-                    ref={confirmPasswordRef}
-                />
-                <TouchableOpacity
-                    onPress={() => setShowConfirmPassword(!showconfirmPassword)}
-                    style={styles.endIconContainer}
-                >
-                    {showconfirmPassword ? (
-                        <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye-off' color={'#000'} size={18} />
-                    ) : (
-                        <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye' color={'#000'} size={18} />
-                    )}
-                </TouchableOpacity>
-            </View>
-            <View style={{ position: 'absolute', bottom: '0%', alignSelf: 'center' }}>
-                <Pressable onPress={() => console.log('Confirm')} style={styles.btn}>
-                    <Text style={styles.btnText}>Confirm</Text>
-                </Pressable>
-            </View>
+                <View style={styles.inputContainer}>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase3}
+                            onChangeText={(text) => setPhrase3(text)}
+                        />
+                    </View>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase4}
+                            onChangeText={(text) => setPhrase4(text)}
+                        />
+                    </View>
+                </View>
+                <View style={styles.inputContainer}>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase5}
+                            onChangeText={(text) => setPhrase5(text)}
+                        />
+                    </View>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase6}
+                            onChangeText={(text) => setPhrase6(text)}
+                        />
+                    </View>
+                </View>
+                <View style={styles.inputContainer}>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase7}
+                            onChangeText={(text) => setPhrase7(text)}
+                        />
+                    </View>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase8}
+                            onChangeText={(text) => setPhrase8(text)}
+                        />
+                    </View>
+                </View>
+                <View style={styles.inputContainer}>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase9}
+                            onChangeText={(text) => setPhrase9(text)}
+                        />
+                    </View>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase10}
+                            onChangeText={(text) => setPhrase10(text)}
+                        />
+                    </View>
+                </View>
+                <View style={styles.inputContainer}>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase11}
+                            onChangeText={(text) => setPhrase11(text)}
+                        />
+                    </View>
+                    <View style={{ width: '45%' }}>
+                        <TextInput
+                            style={[styles.input, styles.extraInput]}
+                            placeholder='Enter Phrase'
+                            value={phrase12}
+                            onChangeText={(text) => setPhrase12(text)}
+                        />
+                    </View>
+                </View>
+                <View style={styles.labelContainer1}>
+                    <Text style={styles.btnText1}>Set Password</Text>
+                </View>
+                <View>
+                    <View style={styles.iconContainer}>
+                        <Icon1 style={styles.iconStyle} name='lock' color={'#000'} size={18} />
+                    </View>
+                    <TextInput
+                        style={[styles.input]}
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        placeholder='Enter'
+                        secureTextEntry={showpassword}
+                        returnKeyType='done'
+                        onSubmitEditing={() => confirmPasswordRef.current.focus()}
+                        ref={passwordRef}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showpassword)} style={styles.endIconContainer}>
+                        {showpassword ? (
+                            <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye-off' color={'#000'} size={18} />
+                        ) : (
+                            <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye' color={'#000'} size={18} />
+                        )}
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <View style={styles.iconContainer}>
+                        <Icon1 style={styles.iconStyle} name='lock' color={'#000'} size={18} />
+                    </View>
+                    <TextInput
+                        style={[styles.input]}
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        placeholder='Re-Enter'
+                        secureTextEntry={showconfirmPassword}
+                        returnKeyType='done'
+                        ref={confirmPasswordRef}
+                    />
+                    <TouchableOpacity
+                        onPress={() => setShowConfirmPassword(!showconfirmPassword)}
+                        style={styles.endIconContainer}
+                    >
+                        {showconfirmPassword ? (
+                            <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye-off' color={'#000'} size={18} />
+                        ) : (
+                            <Icon style={{ ...styles.iconStyle, right: 10 }} name='eye' color={'#000'} size={18} />
+                        )}
+                    </TouchableOpacity>
+                </View>
+                <View style={{ alignSelf: 'center' }}>
+                    <Pressable onPress={() => console.log('Confirm')} style={styles.btn}>
+                        <Text style={styles.btnText}>Confirm</Text>
+                    </Pressable>
+                </View>
+            </ScrollView>
         </Pressable>
     )
 }
@@ -150,6 +269,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    extraInput: { height: 40, paddingLeft: 10, marginTop: 0 },
     btnText: {
         color: '#fff',
         fontSize: 20,
@@ -160,8 +280,9 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '400',
     },
+    inputContainer: { flexDirection: 'row', justifyContent: 'center', flex: 1, marginTop: 0 },
     labelContainer: { width: '90%', alignSelf: 'center', marginTop: 30 },
-    labelContainer1: { width: '90%', alignSelf: 'center', marginTop: 30 },
+    labelContainer1: { width: '90%', alignSelf: 'center', marginTop: 20 },
     container: {
         flex: 1,
         flexDirection: 'row', // Arrange blocks horizontally
@@ -187,10 +308,12 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 16,
         marginHorizontal: 4,
+        height: 30,
     },
     buttonText: {
         color: 'black',
         textAlign: 'center',
+        width: 50,
     },
     number: {
         marginRight: 8, // Adjust as needed
