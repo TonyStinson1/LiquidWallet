@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../store/AppHooks'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { createAccount } from '@liquid-zk/verifier-sdk-typescript';
 
 const ImportDID: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -18,6 +19,7 @@ const ImportDID: React.FC = () => {
     const [showpassword, setShowPassword] = useState(true)
     const [showconfirmPassword, setShowConfirmPassword] = useState(true)
 
+    const [phrase0, setPhrase0] = useState('')
     const [phrase1, setPhrase1] = useState('')
     const [phrase2, setPhrase2] = useState('')
     const [phrase3, setPhrase3] = useState('')
@@ -37,7 +39,7 @@ const ImportDID: React.FC = () => {
     const handlePaste = async (text: string) => {
         try {
             const phrases = text.split(' ')
-
+            setPhrase0(text)
             // Assign phrases to state variables
             setPhrase1(phrases[0] || '')
             setPhrase2(phrases[1] || '')
@@ -54,6 +56,10 @@ const ImportDID: React.FC = () => {
         } catch (error) {
             console.error('Error reading clipboard content:', error)
         }
+    }
+
+    const confirmCall = async() => {
+        let resp = await createAccount(phrase0, password)
     }
 
     return (
