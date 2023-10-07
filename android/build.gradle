@@ -12,6 +12,7 @@ buildscript {
     }
     repositories {
         google()
+        maven { url "https://maven.sumsub.com/repository/maven-public/" }
         mavenCentral()
     }
     dependencies {
