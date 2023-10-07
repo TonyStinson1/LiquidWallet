@@ -1,5 +1,16 @@
 import React, { useRef, useState } from 'react'
-import { View, Text, StyleSheet, Pressable, TextInput, Keyboard, TouchableOpacity, ScrollView } from 'react-native'
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    TextInput,
+    Keyboard,
+    TouchableOpacity,
+    ScrollView,
+    Platform,
+    Dimensions,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AuthNavigationParamList } from '../../navigation/interface'
@@ -7,6 +18,7 @@ import { useAppDispatch } from '../../store/AppHooks'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const ImportDID: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -17,6 +29,7 @@ const ImportDID: React.FC = () => {
     const [showSecret, setShowSecret] = useState(true)
     const [showpassword, setShowPassword] = useState(true)
     const [showconfirmPassword, setShowConfirmPassword] = useState(true)
+    const [enableScrollViewScroll, setEnableScrollViewScroll] = useState(true)
 
     const [phrase1, setPhrase1] = useState('')
     const [phrase2, setPhrase2] = useState('')
@@ -57,15 +70,22 @@ const ImportDID: React.FC = () => {
     }
 
     return (
-        <Pressable
-            onPress={() => {
-                // setEnableScrollViewScroll('');
-                Keyboard.dismiss()
-            }}
-            accessible={false}
+        <KeyboardAwareScrollView
+            enableOnAndroid={true}
+            extraScrollHeight={Platform.select({ android: -Dimensions.get('window').height - 200 })}
+            scrollEnabled={enableScrollViewScroll}
+            contentContainerStyle={{ flexGrow: 1 }}
             style={{ flex: 1, backgroundColor: '#10193a' }}
         >
-            <ScrollView>
+            <Pressable
+                onPress={() => {
+                    // setEnableScrollViewScroll('');
+                    setEnableScrollViewScroll(true)
+                    Keyboard.dismiss()
+                }}
+                accessible={false}
+                style={{ flex: 1, backgroundColor: '#10193a' }}
+            >
                 <View style={styles.labelContainer}>
                     <Text style={styles.btnText}>Import DID Account</Text>
                 </View>
@@ -254,8 +274,8 @@ const ImportDID: React.FC = () => {
                         <Text style={styles.btnText}>Confirm</Text>
                     </Pressable>
                 </View>
-            </ScrollView>
-        </Pressable>
+            </Pressable>
+        </KeyboardAwareScrollView>
     )
 }
 
