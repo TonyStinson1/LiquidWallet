@@ -26,6 +26,7 @@ const ImportDID: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>()
 
     const [password, setPassword] = useState('')
+    const [confPassword, setConfPassword] = useState('')
     const [showSecret, setShowSecret] = useState(true)
     const [showpassword, setShowPassword] = useState(true)
     const [showconfirmPassword, setShowConfirmPassword] = useState(true)
@@ -251,8 +252,8 @@ const ImportDID: React.FC = () => {
                     </View>
                     <TextInput
                         style={[styles.input]}
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
+                        onChangeText={(text) => setConfPassword(text)}
+                        value={confPassword}
                         placeholder='Re-Enter'
                         secureTextEntry={showconfirmPassword}
                         returnKeyType='done'
