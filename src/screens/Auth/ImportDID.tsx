@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { setAccessToken } from '../../store/slices/authSlice';
 
 const ImportDID: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -94,7 +95,7 @@ const ImportDID: React.FC = () => {
                     <Text style={styles.btnText1}>Secret Recovery Phrase (12 words)</Text>
                     <TouchableOpacity
                         onPress={() => setShowSecret(!showSecret)}
-                        // style={styles.endIconContainer}
+                    // style={styles.endIconContainer}
                     >
                         {showSecret ? (
                             <Icon
@@ -271,7 +272,9 @@ const ImportDID: React.FC = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignSelf: 'center' }}>
-                    <Pressable onPress={() => console.log('Confirm')} style={styles.btn}>
+                    <Pressable onPress={() =>
+                        dispatch(setAccessToken({ accessToken: 'sjdcbisdbsioubcsiodbv' }))
+                    } style={styles.btn}>
                         <Text style={styles.btnText}>Confirm</Text>
                     </Pressable>
                 </View>
