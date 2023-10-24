@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { setAccessToken } from '../../store/slices/authSlice';
+import { setAccessToken, setIsRegistered } from '../../store/slices/authSlice';
 
 const ImportDID: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -272,8 +272,10 @@ const ImportDID: React.FC = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignSelf: 'center' }}>
-                    <Pressable onPress={() =>
+                    <Pressable onPress={() => {
+                        dispatch(setIsRegistered({ isRegistered: true }))
                         dispatch(setAccessToken({ accessToken: 'sjdcbisdbsioubcsiodbv' }))
+                    }
                     } style={styles.btn}>
                         <Text style={styles.btnText}>Confirm</Text>
                     </Pressable>

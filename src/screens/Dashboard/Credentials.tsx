@@ -133,7 +133,10 @@ const Credentials = () => {
                         width: '100%',
                     }}
                 >
-                    <TouchableOpacity style={{ width: '10%' }} onPress={() => addPresentModalPress()}>
+                    <TouchableOpacity style={{ width: '10%' }} onPress={() =>
+                        // addPresentModalPress()
+                        navigation.navigate('DIDVerify')
+                    }>
                         <Icon name='add-circle-outline' size={24} color='white' />
                     </TouchableOpacity>
                     <View style={{ width: '10%' }}>
@@ -199,7 +202,7 @@ const Credentials = () => {
             >
                 {renderModal()}
             </BottomSheetModal>
-        </ScrollView>
+        </ScrollView >
     )
 }
 

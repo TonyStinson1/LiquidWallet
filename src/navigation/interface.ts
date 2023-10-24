@@ -8,6 +8,7 @@ export type PostAuthNavigationParamList = {
     DIDEdit: undefined
     ExportDID: undefined
     Credential: undefined
+    DIDVerify: undefined
 }
 
 export type AuthNavigationParamList = {

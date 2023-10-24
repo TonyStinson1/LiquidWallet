@@ -11,6 +11,8 @@ import DIDEdit from '../screens/Dashboard/DIDEdit';
 import CreateDID from '../screens/Dashboard/CreateDID';
 import ExportDID from '../screens/Dashboard/ExportDID';
 import DIDCreated from '../screens/Dashboard/DIDCreated';
+import { useAppSelector } from '../store/AppHooks';
+import DIDVerify from '../screens/VerifyPath/DIDVerify';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -45,14 +47,16 @@ const HomeScreen = () => {
 
 export const PostAuthNavigator = () => {
   // Stack Navigator for Login and Sign up Screen
+  const isRegistered = useAppSelector(state => state.auth.isRegistered);
+
   return (
-    <Stack.Navigator initialRouteName="DIDCreated">
-      <Stack.Screen
+    <Stack.Navigator initialRouteName={"DIDCreated"}>
+      {isRegistered && <Stack.Screen
         name="DIDCreated"
         component={DIDCreated}
         options={{headerShown: false}}
         // options={{ header: () => <CustomHeader title='About you' /> }}
-      />
+      />}
       <Stack.Screen
         name="Home"
         component={HomeScreen}
@@ -72,6 +76,11 @@ export const PostAuthNavigator = () => {
       <Stack.Screen
         name="ExportDID"
         component={ExportDID}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="DIDVerify"
+        component={DIDVerify}
         options={{ header: () => <CustomHeader /> }}
       />
     </Stack.Navigator>

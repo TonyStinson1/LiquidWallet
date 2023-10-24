@@ -34,28 +34,14 @@ export interface AuthState {
     accessToken: string
     fcmToken: string
     error: string
-    inviteCode: string
-    invitedMobile: string
-    registrationSuccess: boolean
-    alreadyLaunched: boolean
-    sessionTimeOutModal: boolean
-    acceptInviteLoading: boolean
-    acceptInviteConfirm: boolean
-    acceptInviteConfirmSuccess: boolean
+    isRegistered: boolean
 }
 
 const initialState: AuthState = {
     accessToken: '',
     fcmToken: '',
     error: '',
-    inviteCode: '',
-    invitedMobile: '',
-    registrationSuccess: false,
-    alreadyLaunched: false,
-    sessionTimeOutModal: false,
-    acceptInviteLoading: false,
-    acceptInviteConfirm: false,
-    acceptInviteConfirmSuccess: false,
+    isRegistered: false
 }
 
 const authSlice = createSlice({
@@ -64,15 +50,14 @@ const authSlice = createSlice({
     reducers: {
         setAccessToken: (state, action: PayloadAction<{ accessToken: string }>) => {
             state.accessToken = action.payload.accessToken
-            // resetScConfig(state.accessToken, state.fcmToken)
+        },
+        setIsRegistered: (state, action: PayloadAction<{ isRegistered: boolean }>) => {
+            state.isRegistered = action.payload.isRegistered
         },
         logout: (state) => {
             state.accessToken = ''
-            state.error = ''
-            state.inviteCode = ''
-            state.registrationSuccess = false
-            state.sessionTimeOutModal = false
-            state.acceptInviteLoading = false
+            state.error = '',
+            state.isRegistered = false,
             AsyncStorage.removeItem('accessToken')
         },
     },
@@ -81,6 +66,7 @@ const authSlice = createSlice({
 export const {
     setAccessToken,
     logout,
+    setIsRegistered
 } = authSlice.actions
 
 export default authSlice.reducer
