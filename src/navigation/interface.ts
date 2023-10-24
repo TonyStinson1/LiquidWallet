@@ -9,6 +9,8 @@ export type PostAuthNavigationParamList = {
     ExportDID: undefined
     Credential: undefined
     DIDVerify: undefined
+    BioID: undefined
+    ScanHKID: undefined
 }
 
 export type AuthNavigationParamList = {

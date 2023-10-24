@@ -13,6 +13,8 @@ import ExportDID from '../screens/Dashboard/ExportDID';
 import DIDCreated from '../screens/Dashboard/DIDCreated';
 import { useAppSelector } from '../store/AppHooks';
 import DIDVerify from '../screens/VerifyPath/DIDVerify';
+import BioID from '../screens/VerifyPath/BioID';
+import ScanHKID from '../screens/VerifyPath/ScanHKID';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -39,7 +41,7 @@ const HomeScreen = () => {
         options={{headerShown: false}}
       />
       <Tab.Screen name="Scan" component={ScanScreen} />
-      <Tab.Screen name="Connections" component={ConnectionsScreen} />
+      {/* <Tab.Screen name="Connections" component={ConnectionsScreen} /> */}
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
@@ -81,6 +83,16 @@ export const PostAuthNavigator = () => {
       <Stack.Screen
         name="DIDVerify"
         component={DIDVerify}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="BioID"
+        component={BioID}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="ScanHKID"
+        component={ScanHKID}
         options={{ header: () => <CustomHeader /> }}
       />
     </Stack.Navigator>

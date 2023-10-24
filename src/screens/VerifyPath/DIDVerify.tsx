@@ -8,15 +8,20 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { AuthNavigationParamList } from '../../navigation/interface'
+import { AuthNavigationParamList, PostAuthNavigationParamList } from '../../navigation/interface'
 import { useAppDispatch } from '../../store/AppHooks'
 import { setAccessToken, setIsRegistered } from '../../store/slices/authSlice';
+
 import Icon0 from 'react-native-vector-icons/Entypo'
 import Icon1 from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome5'
 import Icon3 from 'react-native-vector-icons/MaterialIcons'
 
-const IDtypes = ['ID Card', 'Passport', 'Driving License']
+const IDtypes = [
+    { name: 'ID Card', nav: 'BioID' },
+    { name: 'Passport', nav: 'PassScan' },
+    { name: 'Driving License', nav: 'DriveScan' },
+]
 
 const renderIcons = (id: string) => {
     if (id == 'ID Card') {
@@ -39,7 +44,7 @@ const renderIcons = (id: string) => {
 const DIDVerify: React.FC = () => {
     const dispatch = useAppDispatch()
 
-    const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>()
+    const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
 
     return (
         <View style={styles.container}>
@@ -60,12 +65,12 @@ const DIDVerify: React.FC = () => {
             </View>
             <View>
                 {
-                    IDtypes.map((id: string) => {
+                    IDtypes.map((id: any) => {
                         return (
-                            <Pressable style={{ ...styles.item, marginTop: 15 }}>
-                                {renderIcons(id)}
+                            <Pressable style={{ ...styles.item, marginTop: 15 }} onPress={() => navigation.navigate(id.nav)}>
+                                {renderIcons(id.name)}
                                 <View style={{ marginLeft: 20 }}>
-                                    <Text style={styles.textStyle1}>{id}</Text>
+                                    <Text style={styles.textStyle1}>{id.name}</Text>
                                 </View>
                                 <View style={{ position: 'absolute', top: 15, right: 5 }}>
                                     <Icon0 name={'chevron-thin-right'} size={25} color='white' />
@@ -75,6 +80,9 @@ const DIDVerify: React.FC = () => {
                     })
                 }
             </View>
+            {/* <View style={{ position: 'absolute', bottom: 0 }}>
+                <Text style={styles.textStyle1}>Hong Kong</Text>
+            </View> */}
         </View>
     )
 }
