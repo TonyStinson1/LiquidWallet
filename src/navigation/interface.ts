@@ -16,6 +16,9 @@ export type PostAuthNavigationParamList = {
     ScanFace: undefined
     FaceSnap: undefined
     ScanLoader: undefined
+    VerifySuccess: undefined
+    Home: undefined
+    VerifyError: undefined
 }
 
 export type AuthNavigationParamList = {

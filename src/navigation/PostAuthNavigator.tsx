@@ -20,6 +20,8 @@ import BackID from '../screens/VerifyPath/BackID';
 import ScanFace from '../screens/VerifyPath/ScanFace';
 import FaceSnap from '../screens/VerifyPath/FaceSnap';
 import ScanLoader from '../screens/VerifyPath/ScanLoader';
+import VerifySuccess from '../screens/VerifyPath/VerifySuccess';
+import VerifyError from '../screens/VerifyPath/VerifyError';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -123,6 +125,16 @@ export const PostAuthNavigator = () => {
       <Stack.Screen
         name="ScanLoader"
         component={ScanLoader}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VerifySuccess"
+        component={VerifySuccess}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VerifyError"
+        component={VerifyError}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
