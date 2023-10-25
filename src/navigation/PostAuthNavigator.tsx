@@ -15,6 +15,11 @@ import { useAppSelector } from '../store/AppHooks';
 import DIDVerify from '../screens/VerifyPath/DIDVerify';
 import BioID from '../screens/VerifyPath/BioID';
 import ScanHKID from '../screens/VerifyPath/ScanHKID';
+import FrontID from '../screens/VerifyPath/FrontID';
+import BackID from '../screens/VerifyPath/BackID';
+import ScanFace from '../screens/VerifyPath/ScanFace';
+import FaceSnap from '../screens/VerifyPath/FaceSnap';
+import ScanLoader from '../screens/VerifyPath/ScanLoader';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -94,6 +99,31 @@ export const PostAuthNavigator = () => {
         name="ScanHKID"
         component={ScanHKID}
         options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="FrontID"
+        component={FrontID}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="BackID"
+        component={BackID}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="ScanFace"
+        component={ScanFace}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="FaceSnap"
+        component={FaceSnap}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="ScanLoader"
+        component={ScanLoader}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

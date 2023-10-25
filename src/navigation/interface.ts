@@ -11,6 +11,11 @@ export type PostAuthNavigationParamList = {
     DIDVerify: undefined
     BioID: undefined
     ScanHKID: undefined
+    FrontID: undefined
+    BackID: undefined
+    ScanFace: undefined
+    FaceSnap: undefined
+    ScanLoader: undefined
 }
 
 export type AuthNavigationParamList = {
