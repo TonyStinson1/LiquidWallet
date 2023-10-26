@@ -20,7 +20,7 @@ import Icon3 from 'react-native-vector-icons/MaterialIcons'
 const IDtypes = [
     { name: 'ID Card', nav: 'BioID' },
     { name: 'Passport', nav: 'PassScan' },
-    { name: 'Driving License', nav: 'DriveScan' },
+    { name: 'Driving License', nav: 'FrontID' },
 ]
 
 const renderIcons = (id: string) => {
