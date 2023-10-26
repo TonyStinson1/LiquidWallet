@@ -22,6 +22,8 @@ import FaceSnap from '../screens/VerifyPath/FaceSnap';
 import ScanLoader from '../screens/VerifyPath/ScanLoader';
 import VerifySuccess from '../screens/VerifyPath/VerifySuccess';
 import VerifyError from '../screens/VerifyPath/VerifyError';
+import PassScan from '../screens/VerifyPath/PassScan';
+import PassScan1 from '../screens/VerifyPath/PassScan1';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -136,6 +138,16 @@ export const PostAuthNavigator = () => {
         name="VerifyError"
         component={VerifyError}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PassScan"
+        component={PassScan}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="PassScan1"
+        component={PassScan1}
+        options={{ header: () => <CustomHeader /> }}
       />
     </Stack.Navigator>
   );

@@ -19,6 +19,8 @@ export type PostAuthNavigationParamList = {
     VerifySuccess: undefined
     Home: undefined
     VerifyError: undefined
+    PassScan: undefined
+    PassScan1: undefined
 }
 
 export type AuthNavigationParamList = {
