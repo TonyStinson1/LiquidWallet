@@ -32,6 +32,7 @@ const SvrComm = new ServerCommunicator()
 
 export interface AuthState {
     accessToken: string
+    userId: string
     fcmToken: string
     error: string
     isRegistered: boolean
@@ -39,6 +40,7 @@ export interface AuthState {
 
 const initialState: AuthState = {
     accessToken: '',
+    userId: '',
     fcmToken: '',
     error: '',
     isRegistered: false
@@ -50,6 +52,9 @@ const authSlice = createSlice({
     reducers: {
         setAccessToken: (state, action: PayloadAction<{ accessToken: string }>) => {
             state.accessToken = action.payload.accessToken
+        },
+        setUserId: (state, action: PayloadAction<{ userId: string }>) => {
+            state.userId = action.payload.userId
         },
         setIsRegistered: (state, action: PayloadAction<{ isRegistered: boolean }>) => {
             state.isRegistered = action.payload.isRegistered
@@ -65,6 +70,7 @@ const authSlice = createSlice({
 
 export const {
     setAccessToken,
+    setUserId,
     logout,
     setIsRegistered
 } = authSlice.actions

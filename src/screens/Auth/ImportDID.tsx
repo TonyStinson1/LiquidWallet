@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 8,
         backgroundColor: '#fff',
+        color: '#000'
     },
     endIconContainer: {
         position: 'absolute',

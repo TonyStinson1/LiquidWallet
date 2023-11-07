@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react'
+import React, { useCallback, useState, useRef, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, StyleSheet, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
@@ -10,6 +10,8 @@ import Icon3 from 'react-native-vector-icons/Entypo'
 import { PostAuthNavigationParamList } from '../../navigation/interface'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useNavigation } from '@react-navigation/native'
+import { useAppDispatch, useAppSelector } from '../../store/AppHooks'
+import { setAccessToken, setUserId } from '../../store/slices/authSlice'
 
 const filerPoints = [
     { header: 'Credential Type', below: 'Any Type' },
@@ -21,6 +23,11 @@ const filerPoints = [
 ]
 
 const Credentials = () => {
+
+    const dispatch = useAppDispatch();
+    const accessToken = useAppSelector(state => state.auth.accessToken);
+    const userId = useAppSelector(state => state.auth.userId);
+
     const [modalType, setModalType] = useState('')
     const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
     // ref
@@ -54,6 +61,38 @@ const Credentials = () => {
             </TouchableOpacity>
         )
     }
+
+    const tokenCall = () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "userId": userId.length > 0 ? userId : "1214314"
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://app.liquid.com.hk/api/sumsub/access_token", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                let obj = JSON.parse(result)
+                console.log("result", obj.data.token)
+                dispatch(setAccessToken({ accessToken: obj.data.token }))
+                dispatch(setUserId({ userId: obj.data.userId }))
+            })
+            .catch(error => console.log('error', error));// parses JSON response into native JavaScript objects
+    }
+
+    useEffect(() => {
+        if (accessToken && accessToken.length > 0) {
+            tokenCall()
+        }
+    }, [])
 
     const addItems = (item: any) => {
         return (
