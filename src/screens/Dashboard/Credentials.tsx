@@ -12,6 +12,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useNavigation } from '@react-navigation/native'
 import { useAppDispatch, useAppSelector } from '../../store/AppHooks'
 import { setAccessToken, setUserId } from '../../store/slices/authSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const filerPoints = [
     { header: 'Credential Type', below: 'Any Type' },
@@ -23,10 +24,9 @@ const filerPoints = [
 ]
 
 const Credentials = () => {
-
-    const dispatch = useAppDispatch();
-    const accessToken = useAppSelector(state => state.auth.accessToken);
-    const userId = useAppSelector(state => state.auth.userId);
+    const dispatch = useAppDispatch()
+    const accessToken = useAppSelector((state) => state.auth.accessToken)
+    const userId = useAppSelector((state) => state.auth.userId)
 
     const [modalType, setModalType] = useState('')
     const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
@@ -62,35 +62,45 @@ const Credentials = () => {
         )
     }
 
-    const tokenCall = () => {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+    const tokenCall = async () => {
+        let ONE_HOUR = 60 * 60 * 1000 /* ms */
+
+        // let currentdate = new Date();
+
+        // let oldDate = await AsyncStorage.getItem('time');
+        let oldUserID = await AsyncStorage.getItem('userId')
+
+        var myHeaders = new Headers()
+        myHeaders.append('Content-Type', 'application/json')
 
         var raw = JSON.stringify({
-            "userId": userId.length > 0 ? userId : "1214314"
-        });
+            userId: userId.length > 0 ? userId : '1214314',
+        })
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
-            redirect: 'follow'
-        };
+            redirect: 'follow',
+        }
 
-        fetch("https://app.liquid.com.hk/api/sumsub/access_token", requestOptions)
-            .then(response => response.text())
-            .then(result => {
+        fetch('https://app.liquid.com.hk/api/sumsub/access_token', requestOptions)
+            .then((response) => response.text())
+            .then(async (result) => {
                 let obj = JSON.parse(result)
-                console.log("result", obj.data.token)
+                console.log('result1', obj)
+                await AsyncStorage.setItem('userId', obj.data.token)
                 dispatch(setAccessToken({ accessToken: obj.data.token }))
-                dispatch(setUserId({ userId: obj.data.userId }))
+                if (userId.length == 0) {
+                    dispatch(setUserId({ userId: obj.data.userId }))
+                }
             })
-            .catch(error => console.log('error', error));// parses JSON response into native JavaScript objects
+            .catch((error) => console.log('error', error)) // parses JSON response into native JavaScript objects
     }
 
     useEffect(() => {
         if (accessToken && accessToken.length > 0) {
-            tokenCall()
+            // tokenCall()
         }
     }, [])
 
@@ -172,10 +182,13 @@ const Credentials = () => {
                         width: '100%',
                     }}
                 >
-                    <TouchableOpacity style={{ width: '10%' }} onPress={() =>
-                        // addPresentModalPress()
-                        navigation.navigate('DIDVerify')
-                    }>
+                    <TouchableOpacity
+                        style={{ width: '10%' }}
+                        onPress={() =>
+                            // addPresentModalPress()
+                            navigation.navigate('DIDVerify')
+                        }
+                    >
                         <Icon name='add-circle-outline' size={24} color='white' />
                     </TouchableOpacity>
                     <View style={{ width: '10%' }}>
@@ -241,7 +254,7 @@ const Credentials = () => {
             >
                 {renderModal()}
             </BottomSheetModal>
-        </ScrollView >
+        </ScrollView>
     )
 }
 

@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    Pressable,
-} from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AuthNavigationParamList, PostAuthNavigationParamList } from '../../navigation/interface'
 import { useAppDispatch, useAppSelector } from '../../store/AppHooks'
-import { setAccessToken, setIsRegistered } from '../../store/slices/authSlice';
-import SNSMobileSDK from '@sumsub/react-native-mobilesdk-module';
+import { setAccessToken, setIsRegistered, setUserId } from '../../store/slices/authSlice'
+import SNSMobileSDK from '@sumsub/react-native-mobilesdk-module'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Icon0 from 'react-native-vector-icons/Entypo'
 import Icon1 from 'react-native-vector-icons/AntDesign'
@@ -26,19 +21,11 @@ const IDtypes = [
 
 const renderIcons = (id: string) => {
     if (id == 'ID Card') {
-        return (
-            <Icon1 name={'idcard'} size={25} color='white' />
-        )
-    }
-    else if (id == 'Passport') {
-        return (
-            <Icon2 name={'passport'} size={25} color='white' />
-        )
-    }
-    else {
-        return (
-            <Icon3 name={'drive-eta'} size={25} color='white' />
-        )
+        return <Icon1 name={'idcard'} size={25} color='white' />
+    } else if (id == 'Passport') {
+        return <Icon2 name={'passport'} size={25} color='white' />
+    } else {
+        return <Icon3 name={'drive-eta'} size={25} color='white' />
     }
 }
 
@@ -47,16 +34,70 @@ const DIDVerify: React.FC = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
 
-    const accessToken = useAppSelector(state => state.auth.accessToken);
-    const userId = useAppSelector(state => state.auth.userId);
+    const accessToken = useAppSelector((state) => state.auth.accessToken)
+    const userId = useAppSelector((state) => state.auth.userId)
 
     useEffect(() => {
-        console.log("Toke   n is ", accessToken);
-        console.log("userId is ", userId);
+        tokenCall()
     }, [])
 
-    let launchSNSMobileSDK = () => {
+    useEffect(() => {
+        console.log('The acces token ', accessToken)
+    }),
+        [accessToken]
 
+    useEffect(() => {
+        console.log('The userId ', userId)
+    }),
+        [userId]
+
+    function generateRandomSevenDigitNumber() {
+        const min = 1000000 // Smallest 7-digit number
+        const max = 9999999 // Largest 7-digit number
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min
+
+        return randomNumber
+    }
+
+    const tokenCall = async () => {
+        let ONE_HOUR = 60 * 60 * 1000 /* ms */
+
+        // let currentdate = new Date();
+
+        // let oldDate = await AsyncStorage.getItem('time');
+        let oldUserID = await AsyncStorage.getItem('userId')
+
+        const randomSevenDigitNumber = generateRandomSevenDigitNumber();
+        console.log('randomSevenDigitNumber', randomSevenDigitNumber);
+        var myHeaders = new Headers()
+        myHeaders.append('Content-Type', 'application/json')
+
+        var raw = JSON.stringify({
+            userId: userId.length > 0 ? userId : randomSevenDigitNumber,
+        })
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow',
+        }
+
+        fetch('https://app.liquid.com.hk/api/sumsub/access_token', requestOptions)
+            .then((response) => response.text())
+            .then(async (result) => {
+                let obj = JSON.parse(result)
+                console.log('result1', obj)
+                await AsyncStorage.setItem('userId', obj.data.token)
+                dispatch(setAccessToken({ accessToken: obj.data.token }))
+                if (userId.length == 0) {
+                    dispatch(setUserId({ userId: obj.data.userId }))
+                }
+            })
+            .catch((error) => console.log('error', error)) // parses JSON response into native JavaScript objects
+    }
+
+    let launchSNSMobileSDK = () => {
         // From your backend get an access token for the applicant to be verified.
         // The token must be generated with `levelName` and `userId`,
         // where `levelName` is the name of a level configured in your dashboard.
@@ -64,11 +105,11 @@ const DIDVerify: React.FC = () => {
         // The sdk will work in the production or in the sandbox environment
         // depend on which one the `accessToken` has been generated on.
         //s
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+        var myHeaders = new Headers()
+        myHeaders.append('Content-Type', 'application/json')
         let raw = JSON.stringify({
-            "userId": userId.length > 0 ? userId : "1214314"
-        });
+            userId: userId.length > 0 ? userId : '1214314',
+        })
 
         let snsMobileSDK = SNSMobileSDK.init(accessToken, () => {
             // this is a token expiration handler, will be called if the provided token is invalid or got expired
@@ -76,29 +117,42 @@ const DIDVerify: React.FC = () => {
             return fetch('https://app.liquid.com.hk/api/sumsub/access_token', {
                 method: 'POST',
                 headers: myHeaders,
-                body: raw
+                body: raw,
             }).then((resp: any) => {
                 // return a fresh token from here
                 return resp.data.token
             })
         })
-            .withHandlers({ // Optional callbacks you can use to get notified of the corresponding events
+            .withHandlers({
+                // Optional callbacks you can use to get notified of the corresponding events
                 onStatusChanged: (event: any) => {
-                    console.log("onStatusChanged: [" + event.prevStatus + "] => [" + event.newStatus + "]");
+                    console.log('onStatusChanged: [' + event.prevStatus + '] => [' + event.newStatus + ']')
                 },
                 onLog: (event: any) => {
-                    console.log("onLog: [Idensic] " + event.message);
-                }
+                    console.log('onLog: [Idensic] ' + event.message)
+                },
             })
             .withDebug(true)
             .withLocale('en') // Optional, for cases when you need to override the system locale
-            .build();
+            .build()
 
-        snsMobileSDK.launch().then((result: any) => {
-            console.log("SumSub SDK State: " + JSON.stringify(result))
-        }).catch((err: any) => {
-            console.log("SumSub SDK Error: " + JSON.stringify(err))
-        });
+        snsMobileSDK
+            .launch()
+            .then((result: any) => {
+                console.log('SumSub SDK State: ' + JSON.stringify(result))
+                if (result.success) {
+                    setTimeout(() => {
+                        navigation.navigate('VerifySuccess')
+                    }, 1000)
+                } else {
+                    setTimeout(() => {
+                        navigation.navigate('VerifyError')
+                    }, 1000)
+                }
+            })
+            .catch((err: any) => {
+                console.log('SumSub SDK Error: ' + JSON.stringify(err))
+            })
     }
 
     return (
@@ -115,25 +169,23 @@ const DIDVerify: React.FC = () => {
                     <Icon0 name={'chevron-thin-right'} size={25} color='white' />
                 </View>
             </Pressable>
-            <View style={{ margin: 20, }}>
+            <View style={{ margin: 20 }}>
                 <Text style={styles.textStyle}>Select your document type</Text>
             </View>
             <View>
-                {
-                    IDtypes.map((id: any) => {
-                        return (
-                            <Pressable style={{ ...styles.item, marginTop: 15 }} onPress={() => launchSNSMobileSDK()}>
-                                {renderIcons(id.name)}
-                                <View style={{ marginLeft: 20 }}>
-                                    <Text style={styles.textStyle1}>{id.name}</Text>
-                                </View>
-                                <View style={{ position: 'absolute', top: 15, right: 5 }}>
-                                    <Icon0 name={'chevron-thin-right'} size={25} color='white' />
-                                </View>
-                            </Pressable>
-                        )
-                    })
-                }
+                {IDtypes.map((id: any) => {
+                    return (
+                        <Pressable style={{ ...styles.item, marginTop: 15 }} onPress={() => launchSNSMobileSDK()}>
+                            {renderIcons(id.name)}
+                            <View style={{ marginLeft: 20 }}>
+                                <Text style={styles.textStyle1}>{id.name}</Text>
+                            </View>
+                            <View style={{ position: 'absolute', top: 15, right: 5 }}>
+                                <Icon0 name={'chevron-thin-right'} size={25} color='white' />
+                            </View>
+                        </Pressable>
+                    )
+                })}
             </View>
             {/* <View style={{ position: 'absolute', bottom: 0 }}>
                 <Text style={styles.textStyle1}>Hong Kong</Text>
@@ -145,7 +197,7 @@ const DIDVerify: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#10193a',
-        flex: 1
+        flex: 1,
     },
     item: {
         alignSelf: 'center',
@@ -154,7 +206,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#4C5467',
         borderRadius: 15,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     btn: {
         width: 250,
@@ -173,7 +225,7 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 300,
         height: 400,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     textStyle: {
         color: '#FFF',
