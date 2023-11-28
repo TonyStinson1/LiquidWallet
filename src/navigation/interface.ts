@@ -21,6 +21,7 @@ export type PostAuthNavigationParamList = {
     VerifyError: undefined
     PassScan: undefined
     PassScan1: undefined
+    Notifications: undefined
 }
 
 export type AuthNavigationParamList = {

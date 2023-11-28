@@ -7,6 +7,7 @@ import { dashStyles } from './dashboardStyles'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Entypo'
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { PostAuthNavigationParamList } from '../../navigation/interface'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useNavigation } from '@react-navigation/native'
@@ -40,7 +41,7 @@ const Credentials = () => {
 
     // callbacks
     const handlePresentModalPress = useCallback(() => {
-        setModalType('filter')
+        setModalType('edit')
         bottomSheetModalRef.current?.present()
     }, [])
 
@@ -60,42 +61,6 @@ const Credentials = () => {
                 <Text style={{ color: '#898989', fontSize: 10 }}>{item.below}</Text>
             </TouchableOpacity>
         )
-    }
-
-    const tokenCall = async () => {
-        let ONE_HOUR = 60 * 60 * 1000 /* ms */
-
-        // let currentdate = new Date();
-
-        // let oldDate = await AsyncStorage.getItem('time');
-        let oldUserID = await AsyncStorage.getItem('userId')
-
-        var myHeaders = new Headers()
-        myHeaders.append('Content-Type', 'application/json')
-
-        var raw = JSON.stringify({
-            userId: userId.length > 0 ? userId : '1214314',
-        })
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow',
-        }
-
-        fetch('https://app.liquid.com.hk/api/sumsub/access_token', requestOptions)
-            .then((response) => response.text())
-            .then(async (result) => {
-                let obj = JSON.parse(result)
-                console.log('result1', obj)
-                await AsyncStorage.setItem('userId', obj.data.token)
-                dispatch(setAccessToken({ accessToken: obj.data.token }))
-                if (userId.length == 0) {
-                    dispatch(setUserId({ userId: obj.data.userId }))
-                }
-            })
-            .catch((error) => console.log('error', error)) // parses JSON response into native JavaScript objects
     }
 
     useEffect(() => {
@@ -189,15 +154,31 @@ const Credentials = () => {
                             navigation.navigate('DIDVerify')
                         }
                     >
-                        <Icon name='add-circle-outline' size={24} color='white' />
+                        <Image
+                            source={require('../../../assets/images/plus.png')}
+                            style={dashStyles.searchFilterImage}
+                        />
+                        {/* <Icon name='add-circle-outline' size={24} color='white' /> */}
                     </TouchableOpacity>
-                    <View style={{ width: '10%' }}>
-                        <Icon name='notifications-outline' size={24} color='white' />
-                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('Notifications')} style={{ width: '10%' }}>
+                        <View style={dashStyles.backIcon}>
+                            <MIcon name='bell' size={17} color='white' />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ width: '10%' }}
+                        onPress={() =>
+                            handlePresentModalPress()
+                        }>
+                        <Image
+                            source={require('../../../assets/images/filter.png')}
+                            style={dashStyles.searchFilterImage}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={dashStyles.contentContainer1}>
-                <View
+                {/* <View
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -214,7 +195,7 @@ const Credentials = () => {
                             style={dashStyles.searchFilterImage}
                         />
                     </View>
-                </View>
+                </View> */}
                 <TouchableOpacity onPress={handlePresentModalPress} style={dashStyles.filterButton}>
                     <Text style={dashStyles.filterButtonText}>Date issued (newest to oldest)</Text>
                     <Icon name='chevron-down' size={24} color='white' />
@@ -246,7 +227,7 @@ const Credentials = () => {
             <BottomSheetModal
                 ref={bottomSheetModalRef}
                 index={1}
-                snapPoints={modalType == 'filter' ? snapPoints1 : snapPoints2}
+                snapPoints={modalType == 'edit' ? snapPoints1 : snapPoints2}
                 onChange={handleSheetChanges}
                 backdropComponent={CustomBackdrop}
                 handleStyle={dashStyles.handlingStyle}

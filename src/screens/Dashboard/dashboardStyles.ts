@@ -22,6 +22,7 @@ export const dashStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    backIcon: { backgroundColor: '#4c5467', width: 30, height: 30, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
     btnText: {
         color: '#fff',
         fontSize: 15,
@@ -46,7 +47,7 @@ export const dashStyles = StyleSheet.create({
         padding: 20,
     },
     headerLeft: {
-        width: '80%',
+        width: '70%',
     },
     headerRight: {
         flexDirection: 'row',
@@ -83,8 +84,8 @@ export const dashStyles = StyleSheet.create({
         marginLeft: 20,
     },
     searchFilterImage: {
-        width: 35,
-        height: 35,
+        width: 30,
+        height: 30,
         resizeMode: 'contain',
     },
     filterButton: {
