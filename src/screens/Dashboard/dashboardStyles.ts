@@ -12,6 +12,53 @@ export const dashStyles = StyleSheet.create({
     handleIndicator: {
         backgroundColor: '#fff',
     },
+    card: {
+        padding: 20,
+        // backgroundColor: '#222A3D',
+        height: 180,
+        width: '90%',
+        alignSelf: 'center',
+        marginTop: 20,
+        borderRadius: 15,
+        borderColor: '#EDEEFF',
+        borderLeftWidth: 1,
+        borderRightWidth: 0.3,
+        borderTopWidth: 1,
+        borderBottomWidth: 0.3
+    },
+    title: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    credential: {
+        color: 'white',
+        fontSize: 16,
+    },
+    bottomRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 50
+    },
+    date: {
+        color: 'white',
+    },
+    verifiedIcon: {
+        width: 10,
+        height: 10,
+        // tintColor: 'green',
+    },
+    carImage: {
+        width: 50,
+        height: 50,
+    },
+    emptyListContainer: {
+        padding: 20,
+        alignItems: 'center',
+    },
+    emptyListText: {
+        color: 'black', // Change the color as needed
+    },
     btn: {
         width: 230,
         height: 40,
@@ -22,7 +69,14 @@ export const dashStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    backIcon: { backgroundColor: '#4c5467', width: 30, height: 30, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
+    backIcon: {
+        backgroundColor: '#4c5467',
+        width: 30,
+        height: 30,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     btnText: {
         color: '#fff',
         fontSize: 15,

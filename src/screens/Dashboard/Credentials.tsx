@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, StyleSheet, Pressable } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import CustomBackdrop from '../../components/CustomBackdrop'
@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useAppDispatch, useAppSelector } from '../../store/AppHooks'
 import { setAccessToken, setUserId } from '../../store/slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import LinearGradient from 'react-native-linear-gradient';
 
 const filerPoints = [
     { header: 'Credential Type', below: 'Any Type' },
@@ -22,6 +23,14 @@ const filerPoints = [
     { header: 'Issuance Date', below: 'Anytime' },
     { header: 'Expiration Date', below: 'Anytime' },
     { header: 'Hide Expired', below: '' },
+]
+
+const data = [
+    // Add your credential data here
+    { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
+    { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
+    { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
+    { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
 ]
 
 const Credentials = () => {
@@ -135,6 +144,48 @@ const Credentials = () => {
         }
     }
 
+    const CredentialCard: React.FC<{ item: Credential }> = ({ item }) => {
+        return (
+            <LinearGradient
+                style={dashStyles.card}
+                colors={['#222A3D', '#1C222F']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0.5, y: 1 }}
+                useAngle={true}
+                angle={135}
+            >
+                {/* <View style={dashStyles.card}> */}
+                    <Text style={dashStyles.title}>{item.title}</Text>
+                    <Text style={dashStyles.credential}>{item.credential}</Text>
+                    <View style={dashStyles.bottomRow}>
+                        <View>
+                            <Text style={dashStyles.date}>{item.date}</Text>
+                            {item.verified && (
+                                <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image
+                                        source={require('../../../assets/images/verify.png')}
+                                        style={dashStyles.verifiedIcon}
+                                        resizeMode='contain'
+                                    />
+                                    <Text style={{ color: '#34CAA6', fontSize: 9, marginLeft: 5 }}>Valid</Text>
+                                </View>
+                            )}
+                        </View>
+                        <Image source={require('../../../assets/images/liquid.png')} style={dashStyles.carImage} />
+                    </View>
+                {/* </View> */}
+            </LinearGradient>
+        )
+    }
+
+    const EmptyListMessage = () => (
+        <View style={dashStyles.emptyListContainer}>
+            <Text style={dashStyles.emptyListText}>
+                To create your first credential, simply click above on the plus icon
+            </Text>
+        </View>
+    )
+
     return (
         <ScrollView style={dashStyles.container}>
             <View style={dashStyles.header}>
@@ -165,11 +216,7 @@ const Credentials = () => {
                             <MIcon name='bell' size={17} color='white' />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ width: '10%' }}
-                        onPress={() =>
-                            handlePresentModalPress()
-                        }>
+                    <TouchableOpacity style={{ width: '10%' }} onPress={() => handlePresentModalPress()}>
                         <Image
                             source={require('../../../assets/images/filter.png')}
                             style={dashStyles.searchFilterImage}
@@ -177,53 +224,24 @@ const Credentials = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={dashStyles.contentContainer1}>
-                {/* <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginBottom: 10,
-                        width: '100%',
-                    }}
-                >
-                    <View style={dashStyles.searchContainer}>
-                        <TextInput style={dashStyles.searchInput} placeholder='Search' />
-                    </View>
-                    <View style={{ marginLeft: 20 }}>
-                        <Image
-                            source={require('../../../assets/images/searchFilter.png')}
-                            style={dashStyles.searchFilterImage}
-                        />
-                    </View>
-                </View> */}
+            {/* <View style={dashStyles.contentContainer1}>
                 <TouchableOpacity onPress={handlePresentModalPress} style={dashStyles.filterButton}>
                     <Text style={dashStyles.filterButtonText}>Date issued (newest to oldest)</Text>
                     <Icon name='chevron-down' size={24} color='white' />
                 </TouchableOpacity>
-                <View style={dashStyles.profileIconContainer}>
-                    <Image source={require('../../../assets/images/profile.png')} style={dashStyles.profileIcon} />
-                </View>
                 <View style={dashStyles.credentialInfo}>
                     <Text style={dashStyles.credentialInfoText}>
                         You will see your credential here once you accept them
                     </Text>
                 </View>
-            </View>
-            <View style={dashStyles.bottomContainer}>
-                <View>
-                    <Image source={require('../../../assets/images/passport.png')} style={dashStyles.bottomIcon} />
-                </View>
-                <View>
-                    <Text style={dashStyles.bottomText}>Proof of citizenship (PoC)</Text>
-                </View>
-                <View>
-                    <Text style={{ color: 'white', fontSize: 11 }}>Based on US-Passport</Text>
-                </View>
-                {/* Bottom Tab Navigator */}
-                <View style={dashStyles.expiresContainer}>
-                    <Text style={{ color: '#000', fontSize: 8 }}>Expires on: Aug, 31st 2024</Text>
-                </View>
-            </View>
+            </View> */}
+            <FlatList
+                data={data}
+                style={{ marginTop: 10, marginBottom: 20 }}
+                renderItem={({ item }) => <CredentialCard item={item} />}
+                ListEmptyComponent={<EmptyListMessage />}
+                keyExtractor={(item, index) => index.toString()}
+            />
             <BottomSheetModal
                 ref={bottomSheetModalRef}
                 index={1}
