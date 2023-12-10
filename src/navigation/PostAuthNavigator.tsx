@@ -25,6 +25,7 @@ import VerifyError from '../screens/VerifyPath/VerifyError';
 import PassScan from '../screens/VerifyPath/PassScan';
 import PassScan1 from '../screens/VerifyPath/PassScan1';
 import Notifications from '../screens/Credentials/Notifications';
+import CardData from '../screens/Credentials/CardData';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -153,6 +154,11 @@ export const PostAuthNavigator = () => {
       <Stack.Screen
         name="Notifications"
         component={Notifications}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="CardData"
+        component={CardData}
         options={{ header: () => <CustomHeader /> }}
       />
     </Stack.Navigator>

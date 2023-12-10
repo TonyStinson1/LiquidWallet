@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useAppDispatch, useAppSelector } from '../../store/AppHooks'
 import { setAccessToken, setUserId } from '../../store/slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient'
 
 const filerPoints = [
     { header: 'Credential Type', below: 'Any Type' },
@@ -25,12 +25,12 @@ const filerPoints = [
     { header: 'Hide Expired', below: '' },
 ]
 
-const data = [
+const cardLine = [
     // Add your credential data here
     { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
+    { title: 'Alumni Card', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
     { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
-    { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
-    { title: 'Driver License', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
+    { title: 'Alumni Card', credential: 'Basic Credential', date: 'January 01, 2023', verified: true },
 ]
 
 const Credentials = () => {
@@ -144,17 +144,18 @@ const Credentials = () => {
         }
     }
 
-    const CredentialCard: React.FC<{ item: Credential }> = ({ item }) => {
+    const CredentialCard: React.FC<{ item: any }> = ({ item }) => {
         return (
-            <LinearGradient
-                style={dashStyles.card}
-                colors={['#222A3D', '#1C222F']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0.5, y: 1 }}
-                useAngle={true}
-                angle={135}
-            >
-                {/* <View style={dashStyles.card}> */}
+            <Pressable onPress={() => navigation.navigate('CardData', { item })}>
+                <LinearGradient
+                    style={dashStyles.card}
+                    colors={['#282638D9', '#1C222F']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0.5, y: 1 }}
+                    useAngle={true}
+                    angle={135}
+                >
+                    {/* <View style={dashStyles.card}> */}
                     <Text style={dashStyles.title}>{item.title}</Text>
                     <Text style={dashStyles.credential}>{item.credential}</Text>
                     <View style={dashStyles.bottomRow}>
@@ -173,8 +174,9 @@ const Credentials = () => {
                         </View>
                         <Image source={require('../../../assets/images/liquid.png')} style={dashStyles.carImage} />
                     </View>
-                {/* </View> */}
-            </LinearGradient>
+                    {/* </View> */}
+                </LinearGradient>
+            </Pressable>
         )
     }
 
@@ -236,11 +238,12 @@ const Credentials = () => {
                 </View>
             </View> */}
             <FlatList
-                data={data}
-                style={{ marginTop: 10, marginBottom: 20 }}
+                data={cardLine}
+                style={{ marginTop: 10, marginBottom: 20, }}
                 renderItem={({ item }) => <CredentialCard item={item} />}
                 ListEmptyComponent={<EmptyListMessage />}
                 keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={cardLine.length === 0 && dashStyles.centerEmptySet}
             />
             <BottomSheetModal
                 ref={bottomSheetModalRef}

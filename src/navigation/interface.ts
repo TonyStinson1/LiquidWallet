@@ -22,6 +22,7 @@ export type PostAuthNavigationParamList = {
     PassScan: undefined
     PassScan1: undefined
     Notifications: undefined
+    CardData: any
 }
 
 export type AuthNavigationParamList = {

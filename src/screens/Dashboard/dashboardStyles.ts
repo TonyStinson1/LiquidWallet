@@ -15,7 +15,7 @@ export const dashStyles = StyleSheet.create({
     card: {
         padding: 20,
         // backgroundColor: '#222A3D',
-        height: 180,
+        height: 200,
         width: '90%',
         alignSelf: 'center',
         marginTop: 20,
@@ -24,7 +24,7 @@ export const dashStyles = StyleSheet.create({
         borderLeftWidth: 1,
         borderRightWidth: 0.3,
         borderTopWidth: 1,
-        borderBottomWidth: 0.3
+        borderBottomWidth: 0.3,
     },
     title: {
         color: 'white',
@@ -34,11 +34,12 @@ export const dashStyles = StyleSheet.create({
     credential: {
         color: 'white',
         fontSize: 16,
+        marginTop: 10,
     },
     bottomRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 50
+        marginTop: 65,
     },
     date: {
         color: 'white',
@@ -52,12 +53,35 @@ export const dashStyles = StyleSheet.create({
         width: 50,
         height: 50,
     },
+    image1Style: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 8,
+    },
     emptyListContainer: {
         padding: 20,
+        marginTop: '50%',
         alignItems: 'center',
+        justifyContent: 'center',
+        width: '90%'
     },
     emptyListText: {
-        color: 'black', // Change the color as needed
+        color: '#fff', // Change the color as needed
+        alignSelf: 'center',
+        textAlign: 'center',
+        lineHeight: 22
+    },
+    centerEmptySet: {
+        justifyContent: 'center', 
+        alignItems: 'center',
+    },
+    cardDetail: {
+        backgroundColor: '#282638D9',
+        height: 370,
+        marginTop: 20,
+        width: '90%',
+        alignSelf: 'center',
+        padding: 20
     },
     btn: {
         width: 230,
