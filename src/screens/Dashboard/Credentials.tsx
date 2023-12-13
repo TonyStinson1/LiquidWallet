@@ -6,7 +6,10 @@ import CustomBackdrop from '../../components/CustomBackdrop'
 import { dashStyles } from './dashboardStyles'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Icon2 from 'react-native-vector-icons/AntDesign'
-import Icon3 from 'react-native-vector-icons/Entypo'
+import Icon3 from 'react-native-vector-icons/Ionicons'
+
+import Icon4 from 'react-native-vector-icons/Octicons'
+
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { PostAuthNavigationParamList } from '../../navigation/interface'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -15,14 +18,34 @@ import { useAppDispatch, useAppSelector } from '../../store/AppHooks'
 import { setAccessToken, setUserId } from '../../store/slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LinearGradient from 'react-native-linear-gradient'
+import DatePicker from 'react-native-modal-datetime-picker'
 
 const filerPoints = [
-    { header: 'Credential Type', below: 'Any Type' },
-    { header: 'Issuer DID', below: 'All Issuer DID' },
-    { header: 'Holder DID', below: 'All Holder DID' },
-    { header: 'Issuance Date', below: 'Anytime' },
-    { header: 'Expiration Date', below: 'Anytime' },
-    { header: 'Hide Expired', below: '' },
+    { header: 'Credential Type', below: 'Any Type', type: 'cred' },
+    { header: 'Issuer DID', below: 'All Issuer DID', type: 'issue' },
+    { header: 'Holder DID', below: 'All Holder DID', type: 'hold' },
+    { header: 'Issuance Date', below: 'Anytime', type: 'issuance' },
+    { header: 'Expiration Date', below: 'Anytime', type: 'expire' },
+    { header: 'Hide Expired', below: '', type: 'hide' },
+]
+
+const credTypes = [
+    { header: 'Driver license', check: false },
+    { header: 'Passport', check: false },
+    { header: 'ID Card', check: false },
+    { header: 'Residence Permit', check: false },
+]
+
+const issueTypes = [
+    { header: 'All Issuer DID', check: false },
+    { header: 'Liquid', check: false },
+    { header: 'HKGOV', check: false },
+]
+
+const holderTypes = [
+    { header: 'All Holder DID', check: false },
+    { header: 'Default DID', check: false },
+    { header: 'Account 2', check: false },
 ]
 
 const cardLine = [
@@ -37,6 +60,14 @@ const Credentials = () => {
     const dispatch = useAppDispatch()
     const accessToken = useAppSelector((state) => state.auth.accessToken)
     const userId = useAppSelector((state) => state.auth.userId)
+    const [credPoints, setCredPoints] = useState([])
+    const [issuePoints, setIssuePoints] = useState([])
+    const [holderPoints, setHolderPoints] = useState([])
+    const [from, setFrom] = useState('')
+    const [to, setTo] = useState('')
+    const [change, setChange] = useState('')
+    const [isCalendarVisible, setIsCalendarVisible] = useState(false)
+    const [date, setDate] = useState(new Date())
 
     const [modalType, setModalType] = useState('')
     const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
@@ -65,38 +96,95 @@ const Credentials = () => {
 
     const filterItems = (item: any) => {
         return (
-            <TouchableOpacity style={{ margin: 20, marginLeft: 0 }}>
+            <TouchableOpacity onPress={() => setModalType(item.type)} style={{ margin: 20, marginLeft: 0 }}>
                 <Text style={{ color: '#fff', fontSize: 14 }}>{item.header}</Text>
                 <Text style={{ color: '#898989', fontSize: 10 }}>{item.below}</Text>
             </TouchableOpacity>
         )
     }
 
+    const formattedDate = from
+        ? from.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'numeric',
+              year: 'numeric',
+          })
+        : ''
+
+    const formattedDate1 = to
+        ? to.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'numeric',
+              year: 'numeric',
+          })
+        : ''
+
     useEffect(() => {
         if (accessToken && accessToken.length > 0) {
             // tokenCall()
         }
+        setCredPoints(credTypes)
+        setIssuePoints(issueTypes)
+        setHolderPoints(holderTypes)
     }, [])
 
-    const addItems = (item: any) => {
+    const toggleCheck = (index: number) => {
+        const updatedCredPoints = [...credPoints]
+        updatedCredPoints[index].check = !updatedCredPoints[index].check
+        setCredPoints(updatedCredPoints)
+    }
+
+    const toggleCheck1 = (index: number) => {
+        const updatedCredPoints = [...issuePoints]
+        updatedCredPoints[index].check = !updatedCredPoints[index].check
+        setIssuePoints(updatedCredPoints)
+    }
+
+    const toggleCheck2 = (index: number) => {
+        const updatedCredPoints = [...holderPoints]
+        updatedCredPoints[index].check = !updatedCredPoints[index].check
+        setHolderPoints(updatedCredPoints)
+    }
+
+    const resetFilters = () => {
+        if (modalType == 'cred') {
+            const resetCredPoints = credPoints.map((item) => ({ ...item, check: false }))
+            setCredPoints(resetCredPoints)
+        } else if (modalType == 'issue') {
+            const resetCredPoints = issuePoints.map((item) => ({ ...item, check: false }))
+            setIssuePoints(resetCredPoints)
+        } else if (modalType == 'hold') {
+            const resetCredPoints = holderPoints.map((item) => ({ ...item, check: false }))
+            setHolderPoints(resetCredPoints)
+        }
+    }
+
+    const resetDate = () => {
+        setFrom('')
+        setTo('')
+    }
+
+    const addItems = (item: any, index: number) => {
         return (
             <TouchableOpacity
                 style={dashStyles.editItemContainer}
                 onPress={() => {
-                    handleClosePress()
-                    item.name == 'edit' && navigation.navigate('CreateDID')
+                    if (modalType == 'cred') {
+                        toggleCheck(index)
+                    } else if (modalType == 'issue') {
+                        toggleCheck1(index)
+                    } else if (modalType == 'hold') {
+                        toggleCheck2(index)
+                    }
                 }}
             >
-                <View style={dashStyles.editItem}>
-                    {item.name == 'delete' ? (
-                        <Icon2 name={item.name} size={18} color='white' />
-                    ) : (
-                        <Icon1 name={item.name} size={18} color='white' />
-                    )}
-                </View>
                 <Text style={dashStyles.editText}>{item.header}</Text>
                 <View style={{ position: 'absolute', right: 0 }}>
-                    <Icon3 name={'chevron-small-right'} size={18} color='white' />
+                    {item.check ? (
+                        <Icon4 name='square-fill' size={20} color='#00EC6D' />
+                    ) : (
+                        <Icon4 name='square' size={20} color='#fff' />
+                    )}
                 </View>
             </TouchableOpacity>
         )
@@ -117,7 +205,7 @@ const Credentials = () => {
                     <View>{filerPoints.map((item) => filterItems(item))}</View>
                     <View>
                         <Pressable
-                            // onPress={() => navigation.navigate('SetupPasscode')}
+                            onPress={() => handleClosePress()}
                             style={dashStyles.btn}
                         >
                             <Text style={dashStyles.btnText}>Show Result</Text>
@@ -125,20 +213,149 @@ const Credentials = () => {
                     </View>
                 </View>
             )
-        } else if (modalType == 'add') {
+        } else if (modalType == 'cred') {
             return (
                 <View style={dashStyles.contentContainer}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <View style={{ justifyContent: 'center', marginBottom: 10 }}>
-                            <Text style={{ color: '#fff', fontSize: 20 }}>Edit DID</Text>
-                        </View>
+                    <View style={dashStyles.modalDashboard}>
+                        <TouchableOpacity onPress={() => setModalType('edit')} style={dashStyles.modalDashboard1}>
+                            <Icon3 style={{ top: 6 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
+                            <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Credential Type</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
+                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View>{addPoints.map((item) => addItems(item))}</View>
+                    <View>{credPoints.map((item, index) => addItems(item, index))}</View>
+                </View>
+            )
+        } else if (modalType == 'issue') {
+            return (
+                <View style={dashStyles.contentContainer}>
+                    <View style={dashStyles.modalDashboard}>
+                        <TouchableOpacity onPress={() => setModalType('edit')} style={dashStyles.modalDashboard1}>
+                            <Icon3 style={{ top: 7 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
+                            <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Issuer DID</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
+                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>{issuePoints.map((item, index) => addItems(item, index))}</View>
+                </View>
+            )
+        } else if (modalType == 'hold') {
+            return (
+                <View style={dashStyles.contentContainer}>
+                    <View style={dashStyles.modalDashboard}>
+                        <TouchableOpacity onPress={() => setModalType('edit')} style={dashStyles.modalDashboard1}>
+                            <Icon3 style={{ top: 7 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
+                            <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Holder DID</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
+                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>{holderPoints.map((item, index) => addItems(item, index))}</View>
+                </View>
+            )
+        } else if (modalType == 'issuance') {
+            return (
+                <View style={dashStyles.contentContainer}>
+                    <View style={dashStyles.modalDashboard}>
+                        <TouchableOpacity onPress={() => setModalType('edit')} style={dashStyles.modalDashboard1}>
+                            <Icon3 style={{ top: 7 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
+                            <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Issuance Date</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => resetDate()} style={dashStyles.modalDashboard1}>
+                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
+                            <Text style={dashStyles.labelText}>From</Text>
+                        </View>
+                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
+                            setIsCalendarVisible(!isCalendarVisible)
+                            setChange('from')
+                        }}>
+                            <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
+                                <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
+                            </View>
+                            <View style={dashStyles.textBox}>
+                                <Text style={{ color: '#43494F' }}>
+                                    {from.length == 0 ? 'Enter date' : formattedDate}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
+                            <Text style={dashStyles.labelText}>To</Text>
+                        </View>
+                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
+                            setIsCalendarVisible(!isCalendarVisible)
+                            setChange('to')
+                        }}>
+                            <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
+                                <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
+                            </View>
+                            <View style={dashStyles.textBox}>
+                                <Text style={{ color: '#43494F' }}>
+                                    {to.length == 0 ? 'Enter date' : formattedDate1}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+        } else if (modalType == 'expire') {
+            return (
+                <View style={dashStyles.contentContainer}>
+                    <View style={dashStyles.modalDashboard}>
+                        <TouchableOpacity onPress={() => setModalType('edit')} style={dashStyles.modalDashboard1}>
+                            <Icon3 style={{ top: 7 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
+                            <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Expiration Date</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => resetDate()} style={dashStyles.modalDashboard1}>
+                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
+                            <Text style={dashStyles.labelText}>From</Text>
+                        </View>
+                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
+                            setIsCalendarVisible(!isCalendarVisible)
+                            setChange('from')
+                        }}>
+                            <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
+                                <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
+                            </View>
+                            <View style={dashStyles.textBox}>
+                                <Text style={{ color: '#43494F' }}>
+                                    {from.length == 0 ? 'Enter date' : formattedDate}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
+                            <Text style={dashStyles.labelText}>To</Text>
+                        </View>
+                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
+                            setIsCalendarVisible(!isCalendarVisible)
+                            setChange('to')
+                        }}>
+                            <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
+                                <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
+                            </View>
+                            <View style={dashStyles.textBox}>
+                                <Text style={{ color: '#43494F' }}>
+                                    {to.length == 0 ? 'Enter date' : formattedDate1}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )
         }
@@ -192,7 +409,7 @@ const Credentials = () => {
         <ScrollView style={dashStyles.container}>
             <View style={dashStyles.header}>
                 <View style={dashStyles.headerLeft}>
-                    <Text style={dashStyles.headerText}>Credentials</Text>
+                    <Text style={dashStyles.headerText}>Credentials: {cardLine.length}</Text>
                 </View>
                 <View
                     style={{
@@ -226,20 +443,9 @@ const Credentials = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/* <View style={dashStyles.contentContainer1}>
-                <TouchableOpacity onPress={handlePresentModalPress} style={dashStyles.filterButton}>
-                    <Text style={dashStyles.filterButtonText}>Date issued (newest to oldest)</Text>
-                    <Icon name='chevron-down' size={24} color='white' />
-                </TouchableOpacity>
-                <View style={dashStyles.credentialInfo}>
-                    <Text style={dashStyles.credentialInfoText}>
-                        You will see your credential here once you accept them
-                    </Text>
-                </View>
-            </View> */}
             <FlatList
                 data={cardLine}
-                style={{ marginTop: 10, marginBottom: 20, }}
+                style={{ marginTop: 10, marginBottom: 20 }}
                 renderItem={({ item }) => <CredentialCard item={item} />}
                 ListEmptyComponent={<EmptyListMessage />}
                 keyExtractor={(item, index) => index.toString()}
@@ -256,6 +462,25 @@ const Credentials = () => {
             >
                 {renderModal()}
             </BottomSheetModal>
+            <DatePicker
+                    minimumDate={new Date(1923, 0, 1)}
+                    isVisible={isCalendarVisible}
+                    date={date}
+                    maximumDate={new Date()}
+                    mode={'date'}
+                    onConfirm={(date) => {
+                        setIsCalendarVisible(false)
+                        setDate(date)
+                        if(change == 'from') {
+                            setFrom(date)
+                        } else {
+                            setTo(date)
+                        }
+                    }}
+                    onCancel={() => {
+                        setIsCalendarVisible(false)
+                    }}
+                />
         </ScrollView>
     )
 }

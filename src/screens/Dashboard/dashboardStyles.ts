@@ -236,6 +236,7 @@ export const dashStyles = StyleSheet.create({
     modalDashboard1: {
         justifyContent: 'center',
         marginBottom: 10,
+        flexDirection: 'row',
     },
     modalHeader: {
         justifyContent: 'center',
@@ -252,5 +253,32 @@ export const dashStyles = StyleSheet.create({
     modalResetText: {
         color: '#fff',
         fontSize: 16,
+    },
+    labelText: {
+        color: '#EDEEFF',
+        fontWeight: '500',
+        fontSize: 15,
+    },
+    label: {
+        marginBottom: 5,
+    },
+    addPatientIconContainer: {
+        position: 'absolute',
+        top: 15,
+        zIndex: 999,
+        width: '100%'
+    },
+    iconStyle: { paddingLeft: 7 },
+    textBox: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        paddingLeft: 40,
+        width: '100%',
+        height: 50,
+        marginBottom: 16,
+        alignSelf: 'center',
+        borderRadius: 8,
+        justifyContent: 'center',
     },
 })
