@@ -26,6 +26,7 @@ import PassScan from '../screens/VerifyPath/PassScan';
 import PassScan1 from '../screens/VerifyPath/PassScan1';
 import Notifications from '../screens/Credentials/Notifications';
 import CardData from '../screens/Credentials/CardData';
+import DeleteVerify from '../screens/Dashboard/DeleteVerify';
 
 // import Login from '../screens/Auth/Login'
 // import Register from '../screens/Auth/Register'
@@ -94,6 +95,11 @@ export const PostAuthNavigator = () => {
       <Stack.Screen
         name="DIDVerify"
         component={DIDVerify}
+        options={{ header: () => <CustomHeader /> }}
+      />
+      <Stack.Screen
+        name="DeleteVerify"
+        component={DeleteVerify}
         options={{ header: () => <CustomHeader /> }}
       />
       <Stack.Screen

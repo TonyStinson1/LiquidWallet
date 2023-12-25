@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Pressable, TextInput, Keyboard } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AuthNavigationParamList } from '../../navigation/interface'
 import { setAccessToken } from '../../store/slices/authSlice'
 import { useAppDispatch } from '../../store/AppHooks'
+import DeleteModal from '../../components/DeleteModal'
 
 const checkPoints = [
     'Must include at least 8 characters',
@@ -15,10 +16,16 @@ const checkPoints = [
     'Password confirmation match',
 ]
 
-const ExportDID: React.FC = () => {
+const DeleteVerify: React.FC = () => {
     const dispatch = useAppDispatch()
 
+    const [infoModal, setInfoModal] = useState(false)
+
     const navigation = useNavigation<NativeStackNavigationProp<AuthNavigationParamList>>()
+
+    const closeDown = () => {
+        setInfoModal(false)
+    }
 
     const renderPoints = (item: string) => {
         return (
@@ -78,13 +85,17 @@ const ExportDID: React.FC = () => {
                 }
             </View> */}
             <View style={{ marginTop: 20, alignSelf: 'center' }}>
-                <Pressable
-                    // onPress={() => dispatch(setAccessToken({ accessToken: 'sjdcbisdbsioubcsiodbv' }))}
-                    style={styles.btn}
-                >
-                    <Text style={styles.btnText}>Export</Text>
+                <Pressable onPress={() => setInfoModal(true)} style={styles.btn}>
+                    <Text style={styles.btnText}>Confirm</Text>
                 </Pressable>
             </View>
+            <DeleteModal
+                text={
+                    "This can't be undone. Verifiable credentials received through this DID will not be deleted, you can delete it manually"
+                }
+                visible={infoModal}
+                closeIt={closeDown}
+            />
         </Pressable>
     )
 }
@@ -121,4 +132,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ExportDID
+export default DeleteVerify

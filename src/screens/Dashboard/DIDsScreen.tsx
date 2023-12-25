@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, Pressable, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/Feather'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -21,8 +21,10 @@ const filerPoints = [
 const addPoints = [
     { header: 'Create New DID', name: 'edit' },
     { header: 'Import existing DID', name: 'share' },
-    { header: 'Delete DID', name: 'delete' },
+    // { header: 'Delete DID', name: 'delete' },
 ]
+
+const accData = [{ name: 'Account 2' }, { name: 'Default DID' }, { name: 'Account 3' }]
 
 const DIDsScreen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<PostAuthNavigationParamList>>()
@@ -35,6 +37,7 @@ const DIDsScreen: React.FC = () => {
 
     // variables
     const snapPoints = [1, '40%']
+    const editSnapPoints = [1, '50%']
 
     // callbacks
     const handlePresentModalPress = useCallback(() => {
@@ -53,8 +56,10 @@ const DIDsScreen: React.FC = () => {
                     handleClosePress()
                     if (item.name == 'edit') {
                         navigation.navigate('DIDEdit')
+                    } else if (item.name == 'share') {
+                        navigation.navigate('ExportDID')
                     } else if (item.name == 'delete') {
-                        setInfoModal(true)
+                        navigation.navigate('DeleteVerify')
                     }
                 }}
             >
@@ -85,31 +90,12 @@ const DIDsScreen: React.FC = () => {
         bottomSheetModalRef.current?.present()
     }, [])
 
-    const RenderItem = () => {
+    const accItem = (acc: string) => {
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.defaultDID}>Default DID</Text>
-                    <Pressable onPress={() => editPresentModalPress()}>
-                        <Icon name='ellipsis-vertical' size={20} color='white' />
-                    </Pressable>
-                </View>
-                <Text style={styles.didKey}>did:key:z6jsUydBDjshdbjsd... {/* Replace with your actual DID key */}</Text>
-                <Text style={styles.createdDate}>Created: 30-06-2023 23:53:00</Text>
-                <View style={{ flexDirection: 'row', marginTop: 40 }}>
-                    {/* <Pressable
-                        // onPress={() => navigation.navigate('SetupPasscode')}
-                        style={styles.btn}
-                    >
-                        <Text style={styles.btnText}>Share</Text>
-                    </Pressable>
-                    <Pressable
-                        // onPress={() => navigation.navigate('SetupPasscode')}
-                        onPress={handlePresentModalPress}
-                        style={styles.btn}
-                    >
-                        <Text style={styles.btnText}>Edit</Text>
-                    </Pressable> */}
+            <View style={{ alignItems: 'center', width: 80, marginRight: 15 }}>
+                <Image source={require('../../../assets/images/male.png')} style={styles.accPic} />
+                <View style={{ width: 80, }}>
+                    <Text style={styles.accText}>{acc.name}</Text>
                 </View>
             </View>
         )
@@ -161,6 +147,11 @@ const DIDsScreen: React.FC = () => {
                             <Text style={{ color: '#fff', fontSize: 20 }}>Edit DID</Text>
                         </View>
                     </View>
+                    <ScrollView horizontal>
+                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                            {accData.map((acc: string) => accItem(acc))}
+                        </View>
+                    </ScrollView>
                     <View>{filerPoints.map((item) => filterItems(item))}</View>
                 </View>
             )
@@ -188,32 +179,38 @@ const DIDsScreen: React.FC = () => {
             <View
                 style={{
                     flexDirection: 'row',
-                    //   justifyContent: 'space-between',
+                    justifyContent: 'space-between',
                     padding: 20,
                 }}
             >
-                <View style={{ width: '80%' }}>
+                <View style={{}}>
                     <Text style={{ color: 'white', fontSize: 20 }}>DIDs</Text>
                 </View>
                 <View
                     style={{
                         flexDirection: 'row',
-                        width: '100%',
+                        width: 70,
+                        justifyContent: 'space-between',
                     }}
                 >
-                    <TouchableOpacity onPress={() => addPresentModalPress()} style={{ width: '10%' }}>
-                        <Icon name='add-circle-outline' size={24} color='white' />
+                    <TouchableOpacity onPress={() => addPresentModalPress()} style={styles.iconContainer}>
+                        <Icon name='add-circle-outline' size={20} color='white' />
                     </TouchableOpacity>
-                    <View style={{ width: '10%' }}>
-                        <Icon name='notifications-outline' size={24} color='white' />
-                    </View>
+                    <TouchableOpacity onPress={() => editPresentModalPress()} style={styles.iconContainer}>
+                        <Icon2 name='setting' size={17} color='white' />
+                    </TouchableOpacity>
                 </View>
             </View>
-            <View>{RenderItem()}</View>
+            <View style={{ alignItems: 'center', marginTop: 40 }}>
+                <TouchableOpacity style={{ position: 'absolute', zIndex: 999, right: 50 }}>
+                    <Image source={require('../../../assets/images/sQR.png')} style={styles.sQR} />
+                </TouchableOpacity>
+                <Image source={require('../../../assets/images/strip.png')} style={styles.cardImage} />
+            </View>
             <BottomSheetModal
                 ref={bottomSheetModalRef}
                 index={1}
-                snapPoints={snapPoints}
+                snapPoints={modalType == 'edit' ? editSnapPoints : snapPoints}
                 onChange={handleSheetChanges}
                 backdropComponent={CustomBackdrop}
                 handleStyle={dashStyles.handlingStyle}
@@ -242,6 +239,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 20,
     },
+    accText: {
+        color: '#fff',
+        fontSize: 12,
+        marginTop: 10,
+        textAlign: 'center'
+    },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -268,6 +271,13 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '300',
     },
+    iconContainer: {
+        width: 28,
+        backgroundColor: '#4c5467',
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     btn: {
         width: 80,
         height: 30,
@@ -282,6 +292,21 @@ const styles = StyleSheet.create({
     btnText: {
         color: '#000',
         fontSize: 15,
+    },
+    cardImage: {
+        width: '90%',
+        height: 450,
+        resizeMode: 'contain',
+    },
+    sQR: {
+        width: 90,
+        height: 60,
+        resizeMode: 'contain',
+    },
+    accPic: {
+        width: 48,
+        height: 48,
+        resizeMode: 'contain',
     },
 })
 

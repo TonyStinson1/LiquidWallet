@@ -5,7 +5,9 @@ export type PreAuthNavigationParamList = {
 }
 
 export type PostAuthNavigationParamList = {
+    DeleteVerify: undefined
     DIDEdit: undefined
+    CreateDID: undefined
     ExportDID: undefined
     Credential: undefined
     DIDVerify: undefined

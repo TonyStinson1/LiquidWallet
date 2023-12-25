@@ -159,6 +159,19 @@ const Credentials = () => {
         }
     }
 
+    const checkAllFilters = () => {
+        if (modalType == 'cred') {
+            const resetCredPoints = credPoints.map((item) => ({ ...item, check: true }))
+            setCredPoints(resetCredPoints)
+        } else if (modalType == 'issue') {
+            const resetCredPoints = issuePoints.map((item) => ({ ...item, check: true }))
+            setIssuePoints(resetCredPoints)
+        } else if (modalType == 'hold') {
+            const resetCredPoints = holderPoints.map((item) => ({ ...item, check: true }))
+            setHolderPoints(resetCredPoints)
+        }
+    }
+
     const resetDate = () => {
         setFrom('')
         setTo('')
@@ -204,10 +217,7 @@ const Credentials = () => {
                     </View>
                     <View>{filerPoints.map((item) => filterItems(item))}</View>
                     <View>
-                        <Pressable
-                            onPress={() => handleClosePress()}
-                            style={dashStyles.btn}
-                        >
+                        <Pressable onPress={() => handleClosePress()} style={dashStyles.btn}>
                             <Text style={dashStyles.btnText}>Show Result</Text>
                         </Pressable>
                     </View>
@@ -221,9 +231,14 @@ const Credentials = () => {
                             <Icon3 style={{ top: 6 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
                             <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Credential Type</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
-                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', width: 70, justifyContent: 'space-between' }}>
+                            <TouchableOpacity onPress={() => checkAllFilters()} style={dashStyles.modalDashboard1}>
+                                <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>All</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
+                                <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View>{credPoints.map((item, index) => addItems(item, index))}</View>
                 </View>
@@ -236,9 +251,14 @@ const Credentials = () => {
                             <Icon3 style={{ top: 7 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
                             <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Issuer DID</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
-                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', width: 70, justifyContent: 'space-between' }}>
+                            <TouchableOpacity onPress={() => checkAllFilters()} style={dashStyles.modalDashboard1}>
+                                <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>All</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
+                                <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View>{issuePoints.map((item, index) => addItems(item, index))}</View>
                 </View>
@@ -251,9 +271,14 @@ const Credentials = () => {
                             <Icon3 style={{ top: 7 }} name={'chevron-back-outline'} color={'#fff'} size={20} />
                             <Text style={{ color: '#fff', fontSize: 20, top: 2 }}>Holder DID</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
-                            <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', width: 70, justifyContent: 'space-between' }}>
+                            <TouchableOpacity onPress={() => checkAllFilters()} style={dashStyles.modalDashboard1}>
+                                <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>All</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => resetFilters()} style={dashStyles.modalDashboard1}>
+                                <Text style={{ color: '#fff', fontSize: 13, top: 7 }}>Reset</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View>{holderPoints.map((item, index) => addItems(item, index))}</View>
                 </View>
@@ -274,10 +299,13 @@ const Credentials = () => {
                         <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
                             <Text style={dashStyles.labelText}>From</Text>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
-                            setIsCalendarVisible(!isCalendarVisible)
-                            setChange('from')
-                        }}>
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#fff', height: 50 }}
+                            onPress={() => {
+                                setIsCalendarVisible(!isCalendarVisible)
+                                setChange('from')
+                            }}
+                        >
                             <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
                                 <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
                             </View>
@@ -292,10 +320,13 @@ const Credentials = () => {
                         <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
                             <Text style={dashStyles.labelText}>To</Text>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
-                            setIsCalendarVisible(!isCalendarVisible)
-                            setChange('to')
-                        }}>
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#fff', height: 50 }}
+                            onPress={() => {
+                                setIsCalendarVisible(!isCalendarVisible)
+                                setChange('to')
+                            }}
+                        >
                             <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
                                 <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
                             </View>
@@ -324,10 +355,13 @@ const Credentials = () => {
                         <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
                             <Text style={dashStyles.labelText}>From</Text>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
-                            setIsCalendarVisible(!isCalendarVisible)
-                            setChange('from')
-                        }}>
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#fff', height: 50 }}
+                            onPress={() => {
+                                setIsCalendarVisible(!isCalendarVisible)
+                                setChange('from')
+                            }}
+                        >
                             <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
                                 <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
                             </View>
@@ -342,10 +376,13 @@ const Credentials = () => {
                         <View style={[dashStyles.label, { flexDirection: 'row', marginTop: 10 }]}>
                             <Text style={dashStyles.labelText}>To</Text>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: '#fff', height: 50, }} onPress={() => {
-                            setIsCalendarVisible(!isCalendarVisible)
-                            setChange('to')
-                        }}>
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#fff', height: 50 }}
+                            onPress={() => {
+                                setIsCalendarVisible(!isCalendarVisible)
+                                setChange('to')
+                            }}
+                        >
                             <View style={{ ...dashStyles.addPatientIconContainer, zIndex: 999 }}>
                                 <Icon1 style={dashStyles.iconStyle} name='calendar' color={'#747E9B'} size={17} />
                             </View>
@@ -463,24 +500,24 @@ const Credentials = () => {
                 {renderModal()}
             </BottomSheetModal>
             <DatePicker
-                    minimumDate={new Date(1923, 0, 1)}
-                    isVisible={isCalendarVisible}
-                    date={date}
-                    maximumDate={new Date()}
-                    mode={'date'}
-                    onConfirm={(date) => {
-                        setIsCalendarVisible(false)
-                        setDate(date)
-                        if(change == 'from') {
-                            setFrom(date)
-                        } else {
-                            setTo(date)
-                        }
-                    }}
-                    onCancel={() => {
-                        setIsCalendarVisible(false)
-                    }}
-                />
+                minimumDate={new Date(1923, 0, 1)}
+                isVisible={isCalendarVisible}
+                date={date}
+                maximumDate={new Date()}
+                mode={'date'}
+                onConfirm={(date) => {
+                    setIsCalendarVisible(false)
+                    setDate(date)
+                    if (change == 'from') {
+                        setFrom(date)
+                    } else {
+                        setTo(date)
+                    }
+                }}
+                onCancel={() => {
+                    setIsCalendarVisible(false)
+                }}
+            />
         </ScrollView>
     )
 }
